@@ -67,7 +67,16 @@ app.post('/recognize', function(req, res){
         console.log(data);
     });
     res.end();
-})
+});
+
+app.post('/lookup', function(req, res){
+    var politician = req.body.politician;
+    politician = politician.replace('-', ' ');
+    nameDB(politician, function(data){
+        console.log(data);
+    });
+    res.end();
+});
 
 app.listen(process.env.PORT, function() {
     console.log("Server is up  running at port: " + process.env.PORT);
