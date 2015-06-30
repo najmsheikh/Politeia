@@ -40,6 +40,15 @@
                 $("#threshold").val(null);
             });
         });
+        $("#submit3").click(function() {
+            politician = $("#politician2").val();
+            $.post("http://127.0.0.1:1337/lookup", {
+                politician: politician
+            }, function(data) {
+                Materialize.toast('CID Lookup request sent.', 4000);
+                $("#politician2").val(null);
+            });
+        });
     });
     </script>
 </head>
@@ -67,7 +76,8 @@
             <a class="waves-effect waves-light btn" id="submit">Submit</a>
         </div>
     </div>
-    <br><br>
+    <br>
+    <br>
     <div align="center">
         <h3>Politician Image Recognition</h3>
         <div class="card center-align">
@@ -88,6 +98,23 @@
                 </div>
             </form>
             <a class="waves-effect waves-light btn" id="submit2">Submit</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div align="center">
+        <h3>Politician CID Lookup</h3>
+        <div class="card center-align">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">face</i>
+                        <input id="politician2" type="text" class="validate">
+                        <label for="politician2">Politician</label>
+                    </div>
+                </div>
+            </form>
+            <a class="waves-effect waves-light btn" id="submit3">Submit</a>
         </div>
     </div>
 </body>
