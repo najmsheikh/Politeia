@@ -17,62 +17,63 @@ app.get(/^(.+)$/, function(req, res) {
     res.sendfile(__dirname + req.params[0]);
 });
 
-// var image = 'http://i.huffpost.com/gen/1082266/images/o-STEVE-COHEN-TWITTER-facebook.jpg';
-
-// app.post('/lookup', function(req, res) {
-//     var image = req.body.image;
-//     rekognition.faceDetect(image, function(err, body) {
-//         if (err)
-//             throw err;
-//         if (!err) {
-//             var nameList = JSON.parse(body).face_detection[0].name;
-//             var name = nameList.substring(0, nameList.indexOf(':'));
-//             name = name.replace('_', ' ');
-//             nameDB(name, function(cid) {
-//                 client.candContrib(cid, function(err, json) {
-//                     if (err) throw err;
-//                     console.log('--------------' + name + '\'s Contributions------------');
-//                     for (var i = 0; i < json['contributor'].length; i++) {
-//                         console.log(json['contributor'][i]['@attributes'].org_name);
-//                     };
-//                 });
-//             });
-//         };
-//     });
-//     res.end();
-// });
+app.post('/serve', function(req, res) {
+    var img_url = req.body.img_url;
+    var accuracy = 0.7;
+    var json = {
+        url: img_url,
+        gallery_name: 'politica',
+        threshold: accuracy,
+        max_num_results: 1
+    };
+    kairos.recognize(json, function(data) {
+        var politician = data.replace('-', ' ');
+        nameDB(politician, function(cid) {
+            client.candContrib(cid, function(err, json) {
+                var organizations = [];
+                if (err) throw err;
+                for (var i = 0; i < json['contributor'].length; i++) {
+                    organizations.push({org: json['contributor'][i]['@attributes'].org_name});
+                };
+                res.contentType('application/json');
+                res.send(JSON.stringify(organizations));
+                console.log(politician + ' contributors sent as JSON.')
+            });
+        });
+    });
+});
 
 app.post('/enroll', function(req, res) {
     var img_url = req.body.img_url;
     var politician = req.body.politician;
     var json = {
-            image: img_url,
-            subject_id: politician,
-            gallery_name: 'politica'
-        };
+        image: img_url,
+        subject_id: politician,
+        gallery_name: 'politica'
+    };
     kairos.enroll(json);
     res.end();
 });
 
-app.post('/recognize', function(req, res){
+app.post('/recognize', function(req, res) {
     var img_url = req.body.img_url;
     var accuracy = req.body.threshold;
     var json = {
-            url: img_url,
-            gallery_name: 'politica',
-            threshold: accuracy,
-            max_num_results: 1
-        };
-    kairos.recognize(json, function(data){
+        url: img_url,
+        gallery_name: 'politica',
+        threshold: accuracy,
+        max_num_results: 1
+    };
+    kairos.recognize(json, function(data) {
         console.log(data);
     });
     res.end();
 });
 
-app.post('/lookup', function(req, res){
+app.post('/lookup', function(req, res) {
     var politician = req.body.politician;
     politician = politician.replace('-', ' ');
-    nameDB(politician, function(data){
+    nameDB(politician, function(data) {
         console.log(data);
     });
     res.end();

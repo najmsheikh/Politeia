@@ -1,5 +1,5 @@
 {
-  "name": "reko-test",
+  "name": "politica",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -13,9 +13,6 @@
     "express": "^4.12.4",
     "firebase": "^2.2.6",
     "opensecrets": "0.0.2",
-    "opensecrets-js": "^0.1.2",
-    "rekognition": "0.0.2",
-    "request": "^2.58.0",
-    "unirest": "^0.4.2"
+    "request": "^2.58.0"
   }
 }

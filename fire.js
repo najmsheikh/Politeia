@@ -6,8 +6,8 @@ module.exports = function(politician, callback) {
         var data = snapshot.val();
         data.forEach(function(dataSnap) {
             var index = politician.indexOf(' ');
-            var first = politician.substring(0,index).capitalize();
-            var last = politician.substring(index+1).capitalize();
+            var first = politician.substring(0, index).capitalize();
+            var last = politician.substring(index + 1).capitalize();
             var candidate = dataSnap.Name;
             if (candidate.indexOf(last) >= 0 && candidate.indexOf(first) >= 0)
                 callback(dataSnap.CID);
