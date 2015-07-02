@@ -30,6 +30,6 @@ module.exports.recognize = function(json, callback) {
         body: json
     }, function(error, response, body) {
         if (body.images[0].transaction.status == 'success')
-        	callback(body.images[0].transaction.subject);
+            callback(body.images[0].transaction.subject);
     });
 }
