@@ -45,7 +45,7 @@
             $.post("http://127.0.0.1:1337/lookup", {
                 politician: politician
             }, function(data) {
-                Materialize.toast('CID Lookup request sent.', 4000);
+                Materialize.toast(data + ' is the politician\'s CID', 4000);
                 $("#politician2").val(null);
             });
         });
