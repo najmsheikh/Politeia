@@ -53,8 +53,10 @@ app.post('/enroll', function(req, res) {
         subject_id: politician,
         gallery_name: 'politica'
     };
-    kairos.enroll(json);
-    res.end();
+    kairos.enroll(json, function(data){
+        res.send(data);
+    });
+    // res.end();
 });
 
 app.post('/recognize', function(req, res) {

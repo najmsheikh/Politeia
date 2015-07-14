@@ -1,6 +1,6 @@
 var request = require('request');
 
-module.exports.enroll = function(json) {
+module.exports.enroll = function(json, callback) {
     request({
         method: 'POST',
         url: 'https://api.kairos.com/enroll',
@@ -13,7 +13,8 @@ module.exports.enroll = function(json) {
         body: json
     }, function(error, response, body) {
         if (body.images[0].transaction.status == 'success')
-            console.log(json.subject_id + ' was enrolled.');
+            callback('success');
+        else callback('failure');
     });
 };
 

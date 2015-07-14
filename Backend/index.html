@@ -23,7 +23,7 @@
                 img_url: img_url,
                 politician: politician,
             }, function(data) {
-                Materialize.toast('Politician added to the database.', 4000);
+                Materialize.toast('The enroll was a ' + data, 4000);
                 $("#img_url").val(null);
                 $("#politician").val(null);
             });
@@ -35,7 +35,7 @@
                 img_url: img_url,
                 threshold: threshold
             }, function(data) {
-                Materialize.toast('Image sent for recognition.', 4000);
+                Materialize.toast(data + ' is the politician in the image', 4000);
                 $("#img_url2").val(null);
                 $("#threshold").val(null);
             });
@@ -45,7 +45,7 @@
             $.post("http://127.0.0.1:1337/lookup", {
                 politician: politician
             }, function(data) {
-                Materialize.toast(data + ' is the politician\'s CID', 4000);
+                Materialize.toast(data + ' is the politician\'s CID', 6000);
                 $("#politician2").val(null);
             });
         });
