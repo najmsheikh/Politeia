@@ -29,7 +29,8 @@ module.exports.recognize = function(json, callback) {
         },
         body: json
     }, function(error, response, body) {
-        if (body.images[0].transaction.status == 'success')
+        if (body.images[0].transaction.subject != 'undefined')
             callback(body.images[0].transaction.subject);
+        else callback('N/A');
     });
 }

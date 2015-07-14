@@ -33,7 +33,9 @@ app.post('/serve', function(req, res) {
                 var organizations = [];
                 if (err) throw err;
                 for (var i = 0; i < json['contributor'].length; i++) {
-                    organizations.push({org: json['contributor'][i]['@attributes'].org_name});
+                    organizations.push({
+                        org: json['contributor'][i]['@attributes'].org_name
+                    });
                 };
                 res.contentType('application/json');
                 res.send(JSON.stringify(organizations));
@@ -65,9 +67,11 @@ app.post('/recognize', function(req, res) {
         max_num_results: 1
     };
     kairos.recognize(json, function(data) {
-        console.log(data);
+        console.log('Recognize used on ' + data);
+        data = data.replace('-', ' ');
+        res.send(normalizeName(data));
     });
-    res.end();
+    // res.end();
 });
 
 app.post('/lookup', function(req, res) {
@@ -78,6 +82,17 @@ app.post('/lookup', function(req, res) {
     });
     res.end();
 });
+
+////////HELPER METHODS//////////
+
+function normalizeName(str) {
+    var pieces = str.split(" ");
+    for (var i = 0; i < pieces.length; i++) {
+        var j = pieces[i].charAt(0).toUpperCase();
+        pieces[i] = j + pieces[i].substr(1);
+    }
+    return pieces.join(" ");
+}
 
 app.listen(process.env.PORT, function() {
     console.log("Server is up  running at port: " + process.env.PORT);
