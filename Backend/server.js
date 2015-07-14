@@ -78,9 +78,10 @@ app.post('/lookup', function(req, res) {
     var politician = req.body.politician;
     politician = politician.replace('-', ' ');
     nameDB(politician, function(data) {
-        console.log(data);
+        console.log('Lookup used on '+ politician + ': ' + data);
+        res.send(data);
     });
-    res.end();
+    // res.end();
 });
 
 ////////HELPER METHODS//////////
