@@ -28,7 +28,7 @@ app.post('/serve', function(req, res) {
     };
     kairos.recognize(json, function(data) {
         var politician = data.replace('-', ' ');
-        nameDB(politician, function(cid) {
+        nameDB.getCID(politician, function(cid) {
             client.candContrib(cid, function(err, json) {
                 var organizations = [];
                 if (err) throw err;
@@ -80,12 +80,18 @@ app.post('/recognize', function(req, res) {
 app.post('/lookup', function(req, res) {
     var politician = req.body.politician;
     politician = politician.replace('-', ' ');
-    nameDB(politician, function(data) {
+    nameDB.getCID(politician, function(data) {
         console.log('Lookup used on ' + politician + ': ' + data);
         res.send(data);
     });
     // res.end();
 });
+
+app.post('/listcands', function(req, res){
+    nameDB.listCandidates(politicans){
+        res.send(politicans);
+    }
+})
 
 ////////HELPER METHODS//////////
 
