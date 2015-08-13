@@ -8,7 +8,7 @@ module.exports = function(politician, callback) {
             var index = politician.indexOf(' ');
             var first = politician.substring(0, index).capitalize();
             var last = politician.substring(index + 1).capitalize();
-            var candidate = dataSnap.Name;
+            var candidate = dataSnap.CRPName;
             if (candidate.indexOf(last) >= 0 && candidate.indexOf(first) >= 0)
                 callback(dataSnap.CID);
         });
