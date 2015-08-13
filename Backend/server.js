@@ -88,9 +88,9 @@ app.post('/lookup', function(req, res) {
 });
 
 app.post('/listcands', function(req, res){
-    nameDB.listCandidates(politicans){
-        res.send(politicans);
-    }
+    nameDB.listCandidates(function(politicians){
+        res.send(politicians);
+    })
 })
 
 ////////HELPER METHODS//////////
