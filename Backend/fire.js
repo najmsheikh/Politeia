@@ -1,7 +1,7 @@
 var firebase = require('firebase');
 var fb = new firebase('https://politica.firebaseio.com/');
 
-module.exports = function(politician, callback) {
+module.exports.getCID = function(politician, callback) {
     fb.once('value', function(snapshot) {
         var data = snapshot.val();
         data.forEach(function(dataSnap) {
@@ -14,6 +14,19 @@ module.exports = function(politician, callback) {
         });
     });
 };
+
+module.exports.listCandidates = function(callback) {
+    var politicians = [];
+    fb.once('value', function(datasnap) {
+        var data = datasnap.val();
+        data.forEach(function(snap) {
+            politicians.push({
+                name: snap.CRPName
+            });
+        })
+    })
+    callback(politicians);
+}
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);

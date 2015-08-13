@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Politica Panel</title>
+    <title>Politeia Panel</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -49,6 +49,11 @@
                 $("#politician2").val(null);
             });
         });
+        $("#candList").click(function() {
+            $.post("https://politeia.herokuapp.com/listcands", {}, function(){
+                Materialize.toast('Check the console!', 4000);
+            });
+        })
     });
     </script>
 </head>
@@ -115,6 +120,14 @@
                 </div>
             </form>
             <a class="waves-effect waves-light btn" id="submit3">Submit</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div align="center">
+        <h3>Scripts</h3>
+        <div class="card center-align">
+            <a class="waves-effect waves-light btn" id="candList">List 2016 Candidates</a>
         </div>
     </div>
 </body>
