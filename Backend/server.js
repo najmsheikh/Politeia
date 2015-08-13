@@ -53,7 +53,8 @@ app.post('/enroll', function(req, res) {
         subject_id: politician,
         gallery_name: 'politica'
     };
-    kairos.enroll(json, function(data){
+    kairos.enroll(json, function(data) {
+        console.log(politician + ' was enrolled.');
         res.send(data);
     });
     // res.end();
@@ -80,7 +81,7 @@ app.post('/lookup', function(req, res) {
     var politician = req.body.politician;
     politician = politician.replace('-', ' ');
     nameDB(politician, function(data) {
-        console.log('Lookup used on '+ politician + ': ' + data);
+        console.log('Lookup used on ' + politician + ': ' + data);
         res.send(data);
     });
     // res.end();
