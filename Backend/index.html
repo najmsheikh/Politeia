@@ -19,7 +19,7 @@
         $("#submit").click(function() {
             img_url = $("#img_url").val();
             politician = $("#politician").val();
-            $.post("http://127.0.0.1:1337/enroll", {
+            $.post("https://politeia.herokuapp.com/enroll", {
                 img_url: img_url,
                 politician: politician,
             }, function(data) {
@@ -31,7 +31,7 @@
         $("#submit2").click(function() {
             img_url = $("#img_url2").val();
             threshold = $("#threshold").val();
-            $.post("http://127.0.0.1:1337/recognize", {
+            $.post("https://politeia.herokuapp.com/recognize", {
                 img_url: img_url,
                 threshold: threshold
             }, function(data) {
@@ -42,7 +42,7 @@
         });
         $("#submit3").click(function() {
             politician = $("#politician2").val();
-            $.post("http://127.0.0.1:1337/lookup", {
+            $.post("https://politeia.herokuapp.com/lookup", {
                 politician: politician
             }, function(data) {
                 Materialize.toast(data + ' is the politician\'s CID', 6000);
