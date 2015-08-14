@@ -89,6 +89,7 @@ app.post('/lookup', function(req, res) {
 
 app.post('/listcands', function(req, res){
     nameDB.listCandidates(function(politicians){
+        console.log(politicians);
         res.send(politicians);
     })
 })
