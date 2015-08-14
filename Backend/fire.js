@@ -21,10 +21,12 @@ module.exports.listCandidates = function(callback) {
         var data = datasnap.val();
         data.forEach(function(snap) {
             politicians.push({
-                name: snap.CRPName
+                'name': snap.CRPName
             });
+            console.log(snap.CRPName);
         })
     })
+    console.log(JSON.stringify(politicians));
     callback(politicians);
 }
 
