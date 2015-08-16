@@ -1,0 +1,31 @@
+<dom-module id="my-scaffold">
+    <link rel="stylesheet" href="my-scaffold.css">
+    <template id="scaffold">
+        <paper-header-panel class="flex" mode="waterfall-tall">
+            <paper-toolbar>
+                <iron-icon icon="chevron-right"></iron-icon>
+                <div class="top title">{{headerTitle}}</div>
+                <div class="bottom fit">
+                    <paper-tabs selected="{{selected}}" noink>
+                        <paper-tab id="discover"><a data-route="discover" href="/">Discover</a></paper-tab>
+                        <paper-tab id="learn"><a data-route="learn" href="/learn">Learn</a></paper-tab>
+                        <paper-tab id="explore"><a data-route="explore" href="/explore">Explore</a></paper-tab>
+                    </paper-tabs>
+                </div>
+            </paper-toolbar>
+            <content></content>
+        </paper-header-panel>
+    </template>
+    <script>
+    Polymer({
+        is: "my-scaffold",
+        properties: {
+            headerTitle: {
+                type: String,
+                value: 'test',
+                notify: true
+            }
+        }
+    });
+    </script>
+</dom-module>
