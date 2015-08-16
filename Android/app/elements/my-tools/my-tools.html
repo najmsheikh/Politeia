@@ -1,0 +1,41 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-tools">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    @media (max-width: 600px) {
+        h1.paper-font-display1 {
+            font-size: 24px;
+        }
+    }
+    </style>
+    <template>
+        <paper-icon-button icon="sort"></paper-icon-button>
+        <paper-menu-button horizontal-align="right">
+            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content">
+                <paper-item hidden="[[!userLoggedIn]]">Login</paper-item>
+                <paper-item hidden="[[userLoggedIn]]">Logout</paper-item>
+            </paper-menu>
+        </paper-menu-button>
+        </paper-icon-button>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-tools',
+            behaviors: [MyBehaviors.GlobalsBehavior],
+            properties: {
+                greeting: {
+                    type: String,
+                    value: 'Welcome!',
+                    notify: true
+                }
+            }
+        });
+    })();
+    </script>
+</dom-module>

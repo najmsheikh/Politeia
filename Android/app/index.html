@@ -43,6 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
+    <link rel="import" href="elements/globals-behavior/globals-behavior.html">
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -51,21 +52,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-header-panel class="flex" mode="waterfall-tall">
             <paper-toolbar id="mainToolbar">
                 <iron-icon icon="chevron-right"></iron-icon>
-                <div class="top title"><span>{{headerTitle}}</span></div>
+                <div class="top title">{{headerTitle}}</div>
                 <div class="top">
-                    <div class="discoverButtons">
-                        <paper-icon-button icon="sort"></paper-icon-button>
-                    </div>
-                    <div class="learnButtons"></div>
-                    <div class="exploreButtons"></div>
-                    <paper-menu-button horizontal-align="right">
-                        <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-                        <paper-menu class="dropdown-content">
-                            <paper-item hidden="{{!userLoggedIn}}">Login</paper-item>
-                            <paper-item hidden="{{userLoggedIn}}">Logout</paper-item>
-                        </paper-menu>
-                    </paper-menu-button>
-                    </paper-icon-button>
+                    <my-tools></my-tools>
                 </div>
                 <div class="bottom fit">
                     <paper-tabs selected="{{selected}}" noink>
@@ -83,22 +72,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="learn">
                         <my-learn></my-learn>
                     </section>
-                    <!--             <section data-route="explore">
-                <my-greeting></my-greeting>
-            </section> -->
                 </iron-pages>
             </div>
         </paper-header-panel>
     </template>
-    <script>
-    (function(document) {
-        Polymer({
-            computeHidden: function(app) {
-                return app.route != 'discover';
-            }
-        })
-    })(document);
-    </script>
     <!-- build:js scripts/app.js -->
     <script src="scripts/app.js"></script>
     <!-- endbuild-->

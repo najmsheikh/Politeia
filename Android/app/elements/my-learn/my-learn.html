@@ -7,6 +7,8 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
+<link rel="import" href="../elements.html">
+<!-- <link rel="import" href="../globals-behavior/globals-behavior.html"> -->
 <dom-module id="my-learn">
     <style>
     :host {
@@ -20,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <li><span class="paper-font-body1">{{item}}</span></li>
             </template>
         </ul>
+        <p>{{testText}}</p>
     </template>
     <script>
     (function() {
@@ -31,6 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     notify: true,
                 }
             },
+            // behaviors: [MyBehaviors.GlobalsBehavior],
             ready: function() {
                 this.items = [
                     'Responsive Web App boilerplate',
