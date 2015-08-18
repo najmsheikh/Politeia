@@ -1,0 +1,28 @@
+<script>
+var MyBehaviors = MyBehaviors || {};
+MyBehaviors.GlobalsBehavior = {
+    properties: {
+        testText: {
+            type: String,
+            value: 'Politeia',
+            notify: true
+        },
+        userLoggedIn: {
+            type: Boolean,
+            value: true,
+            notify: true
+        },
+        route: {
+          type: String,
+          value: '',
+          notify: true
+        }
+    },
+    created: function() {
+        console.log('GlobalsBehavior created!');
+    },
+    doThis: function(){
+      alert('wow this actually works!');
+    }
+};
+</script>

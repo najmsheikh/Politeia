@@ -1,0 +1,45 @@
+<script src="../../bower_components/page/page.js"></script>
+<link rel="import" href="globals-behavior/globals-behavior.html">
+<script>
+window.addEventListener('WebComponentsReady', function() {
+
+    var globals =  MyBehaviors.GlobalsBehavior.properties;
+
+    // We use Page.js for routing. This is a Micro
+    // client-side router inspired by the Express router
+    // More info: https://visionmedia.github.io/page.js/
+    page('/', function() {
+        app.selected = '0';
+        app.route = 'discover'
+        app.headerTitle = 'Discover'
+        globals.route.value = 'discover'
+    });
+
+    page('/learn', function() {
+        app.selected = '1';
+        app.route = 'learn'
+        app.headerTitle = 'Learn'
+        globals.route.value = 'learn'
+    });
+
+    page('/explore/:name', function(data) {
+        app.selected = '2';
+        app.route = 'explore';
+        globals.route.value = 'explore'
+        app.params = data.params;
+        console.log(app.params);
+    });
+
+    page('/explore', function() {
+        app.selected = '2';
+        app.route = 'explore'
+        app.headerTitle = 'Explore'
+        globals.route.value = 'explore'
+    });
+
+    // add #! before urls
+    page({
+        hashbang: true
+    });
+});
+</script>

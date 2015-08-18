@@ -1,0 +1,41 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-learn">
+    <style>
+    :host {
+        display: block;
+    }
+    </style>
+    <template>
+        <ul>
+            <template is="dom-repeat" items="{{items}}">
+                <li><span class="paper-font-body1">{{item}}</span></li>
+            </template>
+        </ul>
+        <p>{{testText}}</p>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-learn',
+            properties: {
+                items: {
+                    type: Array,
+                    notify: true,
+                }
+            },
+            behaviors: [MyBehaviors.GlobalsBehavior],
+            ready: function() {
+                this.items = [
+                    'Responsive Web App boilerplate',
+                    'Iron Elements and Paper Elements',
+                    'End-to-end Build Tooling (including Vulcanize)',
+                    'Unit testing with Web Component Tester',
+                    'Routing with Page.js',
+                    'Offline support with the Platinum Service Worker Elements'
+                ];
+            }
+        });
+    })();
+    </script>
+</dom-module>

@@ -1,0 +1,63 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-discover">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #newsCard {
+        padding: 15px;
+    }
+    
+    @media (min-width: 601px) {
+        #newsCard {}
+    }
+    </style>
+    <template>
+        <table>
+            <tr>
+                <td>
+                    <template is="dom-repeat" items="{{items}}">
+                        <news-card content="{{item}}" id="newsCard"></news-card>
+                    </template>
+                </td>
+                <td>
+                    <template is="dom-repeat" items="{{items2}}">
+                        <news-card content="{{item}}" id="newsCard"></news-card>
+                    </template>
+                </td>
+            </tr>
+        </table>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-discover',
+
+            properties: {
+                greeting: {
+                    type: String,
+                    value: 'Welcome!',
+                    notify: true
+                }
+            },
+            ready: function() {
+                this.items = [
+                    'Republican John Kasich (KAY-sik) has landed the endorsement of fellow governor Robert Bentley of Alabama, as Kasich seeks to build support for the GOP presidential nomination.',
+                    'Bolded in his newly released plan on how Donald Trump would solve our country\'s immigration problems if he becomes president is a suggestion to triple the number of law-enforcement agents working to guard the border.',
+                    'Democratic presidential candidate Bernie Sanders tweeted on Monday that he would meet with civil rights activist DeRay Mckesson and others to discuss his racial justice platform.'
+                ];
+                this.items2 = [
+                    'Offline support with the Platinum Service Worker Elements',
+                    'The latest from the presidential candidates as they meet and greet voters at the Iowa State Fair (all times are local): 11 a.m.. Wisconsin Gov.',
+                    'Will Graham has been through a lot. It\'s hard to say what has been the most traumatic event in the life of the tragic hero of Hannibal (Foxtel\'s Showcase, 8.40pm): was it when his psychiatrist cut his stomach open?'
+                ];
+            },
+            computeHidden: function() {
+                return 1 == 2;
+            }
+        });
+    })();
+    </script>
+</dom-module>
