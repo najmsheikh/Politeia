@@ -18,11 +18,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>Politeia</title>
     <!-- Place favicon.ico in the `app/` directory -->
     <!-- Chrome for Android theme color -->
-    <meta name="theme-color" content="#303F9F">
+    <meta name="theme-color" content="#3A3A3A">
     <!-- Web Application Manifest -->
     <link rel="manifest" href="manifest.json">
     <!-- Tile color for Win8 -->
-    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-TileColor" content="#3A3A3A">
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="PSK">
@@ -53,9 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-toolbar id="mainToolbar">
                 <iron-icon icon="chevron-right"></iron-icon>
                 <div class="top title">{{headerTitle}}</div>
-                <div class="top">
-                    <my-tools></my-tools>
-                </div>
+                <my-tools class="top"></my-tools>
                 <div class="bottom fit">
                     <paper-tabs selected="{{selected}}" noink>
                         <paper-tab id="discover"><a data-route="discover" href="/">Discover</a></paper-tab>
@@ -71,6 +69,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </section>
                     <section data-route="learn">
                         <my-learn></my-learn>
+                    </section>
+                    <section data-route="explore">
+                        <my-explore></my-explore>
                     </section>
                 </iron-pages>
             </div>

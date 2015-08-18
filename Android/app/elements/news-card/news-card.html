@@ -1,0 +1,77 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="news-card">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #newsCard {
+        width: 90vw;
+    }
+    
+    .topic {
+        background-color: #fafafa;
+        position: absolute;
+        right: 0px;
+        bottom: 10px;
+        padding: 6px;
+    }
+    
+    .inherit {
+        color: inherit;
+        background-color: inherit;
+    }
+    
+    @media (min-width: 601px) {
+        #newsCard{
+            width: 42vw;
+        }
+    }
+    </style>
+    <template>
+        <paper-card elevation="3" heading="{{heading}}" image="{{image}}" id="newsCard">
+            <div class="card-content">{{content}}</div>
+            <div class="card-actions">
+                <paper-icon-button icon="share" title="share"></paper-icon-button>
+                <a href="{{link}}" class="inherit">
+                    <paper-icon-button icon="link" title="link"></paper-icon-button>
+                </a>
+                <div class="topic">{{topic}}</div>
+            </div>
+        </paper-card>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'news-card',
+            properties: {
+                heading: {
+                    type: String,
+                    value: 'Mock Heading',
+                    notify: true
+                },
+                topic: {
+                    type: String,
+                    value: 'Freedom of Speech'
+                },
+                content: {
+                    type: String,
+                    value: 'Lorem ipsum dolor sit amet. Lorem blah blah.',
+                    notify: true
+                },
+                image: {
+                    type: String,
+                    value: 'http://si.wsj.net/public/resources/images/BN-JN178_BLAND0_TOP_20150722182741.jpg',
+                    notify: true
+                },
+                link: {
+                    type: String,
+                    value: 'https://google.com/',
+                    notify: true
+                }
+            }
+        });
+    })();
+    </script>
+</dom-module>

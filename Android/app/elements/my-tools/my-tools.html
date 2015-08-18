@@ -13,11 +13,11 @@
     }
     </style>
     <template>
-        <paper-icon-button icon="sort"></paper-icon-button>
+        <paper-icon-button icon="sort" hidden="{{_computeHidden()}}"></paper-icon-button>
         <paper-menu-button horizontal-align="right">
             <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
             <paper-menu class="dropdown-content">
-                <paper-item hidden="[[!userLoggedIn]]">Login</paper-item>
+                <paper-item hidden="[[!userLoggedIn]]" on-click="doThis">Login</paper-item>
                 <paper-item hidden="[[userLoggedIn]]">Logout</paper-item>
             </paper-menu>
         </paper-menu-button>
@@ -34,6 +34,16 @@
                     value: 'Welcome!',
                     notify: true
                 }
+            },
+            doThis: function() {
+                alert(MyBehaviors.GlobalsBehavior.properties.route.value == 'discover');
+            },
+            _computeHidden: function() {
+                // if (MyBehaviors.GlobalsBehavior.properties.route.value == 'discover')
+                //     return false;
+                // return true;
+
+                return MyBehaviors.GlobalsBehavior.properties.route.value === 'discover';
             }
         });
     })();
