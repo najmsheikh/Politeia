@@ -1,19 +1,6 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <script src="../../bower_components/page/page.js"></script>
 <link rel="import" href="globals-behavior/globals-behavior.html">
 <script>
-var discover;
-var learn;
-var explore;
-
 window.addEventListener('WebComponentsReady', function() {
 
     var globals =  MyBehaviors.GlobalsBehavior.properties;
@@ -25,21 +12,20 @@ window.addEventListener('WebComponentsReady', function() {
         app.selected = '0';
         app.route = 'discover'
         app.headerTitle = 'Discover'
-        globals.testText.value = 'Well ill be damned'
-        // hideStuff();
+        globals.route.value = 'discover'
     });
 
     page('/learn', function() {
         app.selected = '1';
         app.route = 'learn'
         app.headerTitle = 'Learn'
-        console.log(globals.testText.value);
-        // hideStuff();
+        globals.route.value = 'learn'
     });
 
     page('/explore/:name', function(data) {
         app.selected = '2';
         app.route = 'explore';
+        globals.route.value = 'explore'
         app.params = data.params;
         console.log(app.params);
     });
@@ -48,35 +34,12 @@ window.addEventListener('WebComponentsReady', function() {
         app.selected = '2';
         app.route = 'explore'
         app.headerTitle = 'Explore'
+        globals.route.value = 'explore'
     });
 
     // add #! before urls
     page({
         hashbang: true
     });
-
-    discover = document.getElementById("discoverButtons");
-    learn = document.getElementById("learnButtons");
-    explore = document.getElementById("exploreButtons");
 });
-
-// var hideStuff = function() {
-//     console.log(app.route);
-//     if (app.route == 'discover') {
-//         discover.style.display = "inline";
-//         learn.style.display = "none";
-//         explore.style.display = "none";
-//         console.log('discover');
-//     } else if (app.route == 'learn') {
-//         discover.style.display = "none";
-//         learn.style.display = "inline";
-//         explore.style.display = "none";
-//         console.log('learn');
-//     } else if (app.route == 'explore') {
-//         discover.style.display = "none";
-//         learn.style.display = "none";
-//         explore.style.display = "inline";
-//         console.log('explore');
-//     }
-// }
 </script>

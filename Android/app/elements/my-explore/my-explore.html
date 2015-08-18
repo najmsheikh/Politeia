@@ -1,0 +1,83 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-explore">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #candidateCard {
+        padding: 10px 20px 10px 20px;
+    }
+    
+    #fab {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        color: white;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    
+    #trending {
+        background-color: white;
+        width: 80px;
+        /*height: 50px;*/
+        text-align: center;
+        font-style: italic;
+        font-size: 15px;
+        border-radius: 5px;
+    }
+    </style>
+    <template>
+        <paper-card elevation="3" id="trending">Trending</paper-card>
+        <table>
+            <tr>
+                <td>
+                    <template is="dom-repeat" items="{{items}}">
+                        <candidate-card id="candidateCard" name="{{item}}" party="Republican" education="BS, Harvard University" title="President (D-NA) Challenger" image="https://upload.wikimedia.org/wikipedia/commons/d/de/Bernie_Sanders.jpg"></candidate-card>
+                    </template>
+                </td>
+                <td>
+                    <template is="dom-repeat" items="{{items2}}">
+                        <candidate-card id="candidateCard" name="{{item}}" party="Republican" education="BS, Harvard University" title="President (D-NA) Challenger" image="https://upload.wikimedia.org/wikipedia/commons/d/de/Bernie_Sanders.jpg"></candidate-card>
+                    </template>
+                </td>
+            </tr>
+        </table>
+        <paper-fab icon="camera-alt" id="fab" on-click="_doMagic"></paper-fab>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-explore',
+
+            properties: {
+                greeting: {
+                    type: String,
+                    value: 'Welcome!',
+                    notify: true
+                }
+            },
+            ready: function() {
+                this.items = [
+                    'Bernie Sanders',
+                    'Carly Fiorina',
+                    'Ted Cruz',
+                    'Donald McDonald',
+                    'Bobby Jindal'
+                ];
+                this.items2 = [
+                    'Joe Biden',
+                    'Jeb Bush',
+                    'Hillary Clinton',
+                    'John Doe',
+                    'Not Obama'
+                ];
+            },
+            _doMagic: function() {
+                alert('yay you clicked the camera!');
+            }
+        });
+    })();
+    </script>
+</dom-module>
