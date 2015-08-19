@@ -39,11 +39,8 @@
                 alert(MyBehaviors.GlobalsBehavior.properties.route.value == 'discover');
             },
             _computeHidden: function() {
-                // if (MyBehaviors.GlobalsBehavior.properties.route.value == 'discover')
-                //     return false;
-                // return true;
-
-                return MyBehaviors.GlobalsBehavior.properties.route.value === 'discover';
+                console.log('works!');
+                return !(MyBehaviors.GlobalsBehavior.properties.route.value == 'discover');
             }
         });
     })();

@@ -2,6 +2,7 @@ var express = require('express');
 var kairos = require('./kairos.js');
 var bodyParser = require('body-parser');
 var nameDB = require('./fire.js');
+var parseRss = require('parserss');
 var OpenSecretsClient = require('opensecrets');
 var client = new OpenSecretsClient('***REMOVED***');
 
@@ -92,6 +93,14 @@ app.post('/listcands', function(req, res){
         console.log(politicians);
         res.send(politicians);
     })
+});
+
+app.post('/discover', function(req, res){
+    var topic = req.body.topic;
+    parseRss('https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=1aa2727ef4725936&output=rss',10 ,function(err, rss){
+        console.log(rss);
+    });
+    res.end();
 })
 
 ////////HELPER METHODS//////////
