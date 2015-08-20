@@ -20,7 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         document.querySelector('#caching-complete').show();
     };
 
-    app.selected = 1;
+    app.selected = 0;
+    app.route = 'discover';
     app.headerTitle = 'Politeia';
     app.userLoggedIn = true;
 

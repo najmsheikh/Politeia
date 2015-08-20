@@ -22,6 +22,9 @@ var fs = require('fs');
 var glob = require('glob');
 var historyApiFallback = require('connect-history-api-fallback');
 var server = require('gulp-server-livereload');
+var create = require('gulp-cordova-create'),
+    plugin = require('gulp-cordova-plugin'),
+    android = require('gulp-cordova-build-android');
 
 var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
@@ -45,7 +48,7 @@ var styleTask = function(stylesPath, srcs) {
         .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
         .pipe(gulp.dest('.tmp/' + stylesPath))
         .pipe($.if('*.css', $.cssmin()))
-        .pipe(gulp.dest('dist/' + stylesPath))
+        .pipe(gulp.dest('../../PoliteiaTest/www/' + stylesPath))
         .pipe($.size({
             title: stylesPath
         }));
@@ -84,7 +87,7 @@ gulp.task('images', function() {
             progressive: true,
             interlaced: true
         })))
-        .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('../../PoliteiaTest/www/images'))
         .pipe($.size({
             title: 'images'
         }));
@@ -98,24 +101,24 @@ gulp.task('copy', function() {
         '!app/precache.json'
     ], {
         dot: true
-    }).pipe(gulp.dest('dist'));
+    }).pipe(gulp.dest('../../PoliteiaTest/www'));
 
     var bower = gulp.src([
         'bower_components/**/*'
-    ]).pipe(gulp.dest('dist/bower_components'));
+    ]).pipe(gulp.dest('../../PoliteiaTest/www/bower_components'));
 
     var elements = gulp.src(['app/elements/**/*.html'])
-        .pipe(gulp.dest('dist/elements'));
+        .pipe(gulp.dest('../../PoliteiaTest/www/elements'));
 
     var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
-        .pipe(gulp.dest('dist/elements/bootstrap'));
+        .pipe(gulp.dest('../../PoliteiaTest/www/elements/bootstrap'));
 
     var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
-        .pipe(gulp.dest('dist/sw-toolbox'));
+        .pipe(gulp.dest('../../PoliteiaTest/www/sw-toolbox'));
 
     var vulcanized = gulp.src(['app/elements/elements.html'])
         .pipe($.rename('elements.vulcanized.html'))
-        .pipe(gulp.dest('dist/elements'));
+        .pipe(gulp.dest('../../PoliteiaTest/www/elements'));
 
     return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
         .pipe($.size({
@@ -126,7 +129,7 @@ gulp.task('copy', function() {
 // Copy Web Fonts To Dist
 gulp.task('fonts', function() {
     return gulp.src(['app/fonts/**'])
-        .pipe(gulp.dest('dist/fonts'))
+        .pipe(gulp.dest('../../PoliteiaTest/www/fonts'))
         .pipe($.size({
             title: 'fonts'
         }));
@@ -158,7 +161,7 @@ gulp.task('html', function() {
             spare: true
         })))
         // Output Files
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('../../PoliteiaTest/www'))
         .pipe($.size({
             title: 'html'
         }));
@@ -168,7 +171,7 @@ gulp.task('html', function() {
 gulp.task('vulcanize', function() {
     var DEST_DIR = 'dist/elements';
 
-    return gulp.src('dist/elements/elements.vulcanized.html')
+    return gulp.src('../../PoliteiaTest/www/elements/elements.vulcanized.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -274,6 +277,14 @@ gulp.task('webserver', function() {
             directoryListing: true,
             open: true
         }));
+});
+
+// Compile into apk
+gulp.task('build', function() {
+    return gulp.src('dist')
+        .pipe(create())
+        .pipe(android())
+        .pipe(gulp.dest('apk'));
 });
 
 // Load tasks for web-component-tester
