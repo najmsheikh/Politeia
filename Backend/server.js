@@ -3,8 +3,13 @@ var kairos = require('./kairos.js');
 var bodyParser = require('body-parser');
 var nameDB = require('./fire.js');
 var parseRss = require('parserss');
+var AYLIENTextAPI = require('aylien_textapi');
 var OpenSecretsClient = require('opensecrets');
 var client = new OpenSecretsClient('***REMOVED***');
+var textapi = new AYLIENTextAPI({
+    application_id: "***REMOVED***",
+    application_key: "***REMOVED***"
+});
 
 var app = express();
 app.use(bodyParser.urlencoded({
@@ -88,19 +93,39 @@ app.post('/lookup', function(req, res) {
     // res.end();
 });
 
-app.post('/listcands', function(req, res){
-    nameDB.listCandidates(function(politicians){
+app.post('/listcands', function(req, res) {
+    nameDB.listCandidates(function(politicians) {
         console.log(politicians);
         res.send(politicians);
     })
 });
 
-app.post('/discover', function(req, res){
-    var topic = req.body.topic;
-    parseRss('https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=1aa2727ef4725936&output=rss',10 ,function(err, rss){
-        console.log(rss);
+app.post('/discover', function(req, res) {
+    // var topic = req.body.topic;
+    // parseRss('http://fulltextrssfeed.com/news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=1aa2727ef4725936&output=rss',10 ,function(err, rss){
+    //     res.send(rss);
+    // });
+    var sents = [];
+    textapi.summarize({
+        url: 'http://techcrunch.com/2015/04/06/john-oliver-just-changed-the-surveillance-reform-debate',
+        sentences_number: 10
+    }, function(error, response) {
+        if (error === null) {
+            response.sentences.forEach(function(s) {
+                sents.push({
+                    sent: s
+                })
+            });
+        }
+        res.contentType('application/json');
+        res.send(JSON.stringify(sents));
     });
-    res.end();
+
+    // res.end();
+});
+
+app.post('/learn', function(req, res){
+    
 })
 
 ////////HELPER METHODS//////////

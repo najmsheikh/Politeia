@@ -5,23 +5,45 @@
     :host {
         display: block;
     }
+    
+    .infographic {
+        max-width: 89vw;
+    }
     </style>
     <template>
-        <ul>
-            <template is="dom-repeat" items="{{items}}">
-                <li><span class="paper-font-body1">{{item}}</span></li>
-            </template>
-        </ul>
-        <p>{{testText}}</p>
+        <section>
+            <h4>Dialog layouts</h4>
+            <paper-button data-dialog="loans" onclick="modalHandler('loan')">Student Loans</paper-button>
+            <paper-button data-dialog="wage" onclick="modalHandler('wage')">Minimum Wage</paper-button>
+            <paper-button data-dialog="racism" onclick="modalHandler('racism')">Racism</paper-button>
+            <paper-button data-dialog="climate" onclick="modalHandler('climate')">Climate Change</paper-button>
+            <paper-button data-dialog="privacy" onclick="modalHandler('privacy')">Internet Privacy</paper-button>
+            <dialog id="loan">
+                <img src="https://infogram.io/p/3ee0e2432ad29e7273cd6f9715093632.png" class="infographic" onclick="clickHandler('loan')">
+            </dialog>
+            <dialog id="wage">
+                <img src="https://infogram.io/p/8f53cd5437b81649fb7cd193cbc84190.png" class="infographic" onclick="clickHandler('wage')">
+            </dialog>
+            <dialog id="racism">
+                <img src="https://infogram.io/p/83b10732c7c58d0de7f8f96086a53063.png" class="infographic" onclick="clickHandler('racism')">
+            </dialog>
+            <dialog id="climate">
+                <img src="https://infogram.io/p/a38284378010d90cc043683ac50f97bd.png" class="infographic" onclick="clickHandler('climate')">
+            </dialog>
+            <dialog id="privacy">
+                <img src="https://infogram.io/p/dcee687fe545438e009bfcc67d940328.png" class="infographic" onclick="clickHandler('privacy')">
+            </dialog>
+        </section>
     </template>
     <script>
     (function() {
         Polymer({
             is: 'my-learn',
             properties: {
-                items: {
-                    type: Array,
-                    notify: true,
+                selectedPage: {
+                    type: String,
+                    value: '0',
+                    notify: true
                 }
             },
             behaviors: [MyBehaviors.GlobalsBehavior],
@@ -37,5 +59,14 @@
             }
         });
     })();
+    </script>
+    <script>
+    function clickHandler(id) {
+        document.getElementById(id).close();
+    }
+
+    function modalHandler(id) {
+        document.getElementById(id).showModal();
+    }
     </script>
 </dom-module>
