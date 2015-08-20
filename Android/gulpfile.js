@@ -22,9 +22,7 @@ var fs = require('fs');
 var glob = require('glob');
 var historyApiFallback = require('connect-history-api-fallback');
 var server = require('gulp-server-livereload');
-var create = require('gulp-cordova-create'),
-    plugin = require('gulp-cordova-plugin'),
-    android = require('gulp-cordova-build-android');
+var run = require('gulp-run');
 
 var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
@@ -259,12 +257,17 @@ gulp.task('serve:dist', ['default'], function() {
     });
 });
 
+// Compile into apk
+gulp.task('runapp', function() {
+    run('cd ../../PoliteiaTest & cordova run').exec()
+});
+
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function(cb) {
     runSequence(
         ['copy', 'styles'],
         'elements', ['jshint', 'images', 'fonts', 'html'],
-        'vulcanize',
+        'vulcanize', 'runapp',
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
@@ -279,13 +282,7 @@ gulp.task('webserver', function() {
         }));
 });
 
-// Compile into apk
-gulp.task('build', function() {
-    return gulp.src('dist')
-        .pipe(create())
-        .pipe(android())
-        .pipe(gulp.dest('apk'));
-});
+
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
