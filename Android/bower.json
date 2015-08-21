@@ -9,7 +9,8 @@
     "page": "visionmedia/page.js#~1.6.3",
     "app-router": "~2.6.1",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1",
-    "paper-card": "PolymerElements/paper-card#~1.0.1"
+    "paper-card": "PolymerElements/paper-card#~1.0.1",
+    "file-upload": "~1.5.2"
   },
   "devDependencies": {}
 }

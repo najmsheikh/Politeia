@@ -30,6 +30,8 @@ module.exports.recognize = function(json, callback) {
         },
         body: json
     }, function(error, response, body) {
+        if (error)
+            callback('Came back error');
         if (body.images[0].transaction.subject != 'undefined')
             callback(body.images[0].transaction.subject);
         else callback('N/A');
