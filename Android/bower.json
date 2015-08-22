@@ -10,7 +10,12 @@
     "app-router": "~2.6.1",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1",
     "paper-card": "PolymerElements/paper-card#~1.0.1",
-    "file-upload": "~1.5.2"
+    "file-upload": "~1.5.2",
+    "mat-menu": "~0.9.7",
+    "mat-icon-button": "~0.9.7",
+    "mat-tabs": "~0.9.7",
+    "mat-pages": "~0.9.7",
+    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.3"
   },
   "devDependencies": {}
 }

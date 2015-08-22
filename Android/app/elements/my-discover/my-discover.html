@@ -18,24 +18,10 @@
     }
     </style>
     <template>
-        <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/discover" method="POST" handle-as="json" last-response="{{news}}"></iron-ajax>
+        <!-- <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/test" method="POST" handle-as="json" last-response="{{news}}"></iron-ajax> -->
         <template is="dom-repeat" items="{{news}}">
-            <news-card content="{{item.sent}}" id="newsCard"></news-card>
+            <news-card heading="{{item.title}}" content="{{item.sentences}}" link="{{item.link}}" image ="{{item.image}}" id="newsCard"></news-card>
         </template>
-        <!--         <table>
-            <tr>
-                <td>
-                    <template is="dom-repeat" items="{{news}}">
-                        <news-card content="{{item.sent}}" id="newsCard"></news-card>
-                    </template>
-                </td>
-                <td>
-                    <template is="dom-repeat" items="{{items}}">
-                        <news-card content="{{item}}" id="newsCard"></news-card>
-                    </template>
-                </td>
-            </tr>
-        </table> -->
     </template>
     <script>
     (function() {
