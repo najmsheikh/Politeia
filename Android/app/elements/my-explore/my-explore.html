@@ -37,39 +37,19 @@
     }
     </style>
     <template>
+        <firebase-collection id="candfb" data="{{candidates}}" location="https://politeiacands.firebaseio.com/" limit-to-first="30"></firebase-collection>
         <paper-card elevation="3" id="trending">Trending</paper-card>
         <img src="" id="testImg">
-        <template is="dom-repeat" items="{{items}}">
-            <candidate-card id="candidateCard" name="{{item}}" party="Republican" education="BS, Harvard University" title="President (D-NA) Challenger" image="https://upload.wikimedia.org/wikipedia/commons/d/de/Bernie_Sanders.jpg"></candidate-card>
+        <template is="dom-repeat" items="{{candidates}}">
+            <candidate-card id="candidateCard" name="{{item.preferredName}}" party="{{item.officeParties}}" education="BS, Harvard University" title="{{item.officeName}}" image="https://upload.wikimedia.org/wikipedia/commons/d/de/Bernie_Sanders.jpg"></candidate-card>
         </template>
+        <paper-button raised style="display: block" on-click="_loadMore"><i>LOAD MORE</i></paper-button>
         <paper-fab icon="camera-alt" id="fab" on-click="_doMagic"></paper-fab>
     </template>
     <script>
     (function() {
         Polymer({
             is: 'my-explore',
-
-            properties: {
-                greeting: {
-                    type: String,
-                    value: 'Welcome!',
-                    notify: true
-                }
-            },
-            ready: function() {
-                this.items = [
-                    'Bernie Sanders',
-                    'Carly Fiorina',
-                    'Ted Cruz',
-                    'Donald McDonald',
-                    'Bobby Jindal',
-                    'Joe Biden',
-                    'Jeb Bush',
-                    'Hillary Clinton',
-                    'John Doe',
-                    'Not Obama'
-                ];
-            },
             _doMagic: function() {
                 navigator.camera.getPicture(onSuccess, onFail, {
                     destinationType: Camera.DestinationType.DATA_URL
@@ -94,6 +74,9 @@
                 function onFail(message) {
                     alert('Failed because: ' + message);
                 }
+            },
+            _loadMore: function(){
+                this.$.candfb.limitToFirst+= 20;
             }
         });
     })();

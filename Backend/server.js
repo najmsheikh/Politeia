@@ -2,10 +2,11 @@ var express = require('express');
 var kairos = require('./kairos.js');
 var bodyParser = require('body-parser');
 var nameDB = require('./fire.js');
+var discover = require('./discover.js');
+var Votesmart = require('./votesmart.js');
 var OpenSecretsClient = require('opensecrets');
 var client = new OpenSecretsClient('***REMOVED***');
-var discover = require('./discover.js');
-
+var votesmart = new Votesmart('***REMOVED***');
 
 var app = express();
 app.use(bodyParser.json({
@@ -108,28 +109,15 @@ app.post('/listcands', function(req, res) {
 });
 
 app.post('/discover', function(req, res) {
-    // var topic = req.body.topic;
-    // parseRss('http://fulltextrssfeed.com/news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=1aa2727ef4725936&output=rss',10 ,function(err, rss){
-    //     res.send(rss);
-    // });
-    var sents = [];
-    textapi.summarize({
-        url: 'http://techcrunch.com/2015/04/06/john-oliver-just-changed-the-surveillance-reform-debate',
-        sentences_number: 9
-    }, function(error, response) {
-        if (error === null) {
-            response.sentences.forEach(function(s) {
-                sents.push({
-                    sent: s
-                })
-            });
-        }
-        console.log('discover was called')
-        res.contentType('application/json');
-        res.send(JSON.stringify(sents));
-    });
-
-    // res.end();
+    var urls = [
+        'https://feeds.feedburner.com/EducationWeekHighschools?format=xml',
+        'http://feeds.reuters.com/reuters/topNews?format=xml'
+    ];
+    discover.getLinks(urls, function(data) {
+        discover.getArticles(data, function(data) {
+            res.send(JSON.parse(data));
+        })
+    })
 });
 
 app.post('/learn', function(req, res) {
@@ -137,14 +125,26 @@ app.post('/learn', function(req, res) {
 })
 
 app.post('/test', function(req, res) {
-    var urls = [
-        'https://feeds.feedburner.com/EducationWeekHighschools?format=xml',
-        'http://feeds.reuters.com/reuters/topNews?format=xml'
-    ];
-    discover.getLinks(urls, function(data){
-        discover.getArticles(data, function(data){
-            res.send(JSON.parse(data));
-        })
+    // votesmart.candidateBio('55463', function(err, json){
+    //     if (!err)
+    //         res.send(json);
+    // })
+    votesmart.getStateOfficials('NY', function(err, json) {
+        if (!err) {
+            var list = [];
+            for (var i = 0; i < json.candidateList.candidate.length; i++) {
+                list.push({
+                    candidateId: json.candidateList.candidate[i].candidateId,
+                    firstName: json.candidateList.candidate[i].firstName,
+                    middleName: json.candidateList.candidate[i].middleName,
+                    nickName: json.candidateList.candidate[i].nickName,
+                    preferredName: json.candidateList.candidate[i].preferredName,
+                    lastName: json.candidateList.candidate[i].lastName,
+                    officeName: json.candidateList.candidate[i].officeName
+                })
+            };
+            res.send(list);
+        }
     })
 })
 

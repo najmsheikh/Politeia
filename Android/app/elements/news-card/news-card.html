@@ -10,6 +10,10 @@
         width: 90vw;
     }
     
+    li {
+        margin-left: -23px;
+    }
+    
     .topic {
         background-color: #fafafa;
         position: absolute;
@@ -17,7 +21,7 @@
         bottom: 10px;
         padding: 6px;
     }
-
+    
     @media (min-width: 601px) {
         #newsCard {
             width: 42vw;
@@ -84,7 +88,7 @@
                     computed: 'computeLink(link)'
                 }
             },
-            computeLink: function(link){
+            computeLink: function(link) {
                 return 'https://www.facebook.com/sharer.php?s=100&p[url]=' + link;
             }
         });

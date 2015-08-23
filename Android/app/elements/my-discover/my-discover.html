@@ -10,7 +10,7 @@
         display: inline-block;
         padding: 15px;
     }
-    
+
     @media (width: 720px) {
         #newsCard {
             width: 80vw;
@@ -19,16 +19,20 @@
     </style>
     <template>
         <!-- <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/test" method="POST" handle-as="json" last-response="{{news}}"></iron-ajax> -->
-        <firebase-collection data="{{news}}" location="https://politeianews.firebaseio.com/" limit-to-first="30"></firebase-collection>
+        <firebase-collection id="newsfb" data="{{news}}" location="https://politeianews.firebaseio.com/" limit-to-first="30"></firebase-collection>
         <template is="dom-repeat" items="{{news}}">
-            <news-card heading="{{item.title}}" content="{{item.sentences}}" link="{{item.link}}" image ="{{item.image}}" id="newsCard"></news-card>
+            <news-card heading="{{item.title}}" content="{{item.sentences}}" link="{{item.link}}" image="{{item.image}}" id="newsCard"></news-card>
         </template>
+        <paper-button raised style="display: block" on-click="_loadMore"><i>LOAD MORE</i></paper-button>
     </template>
     <script>
     (function() {
         Polymer({
             is: 'my-discover',
-            behaviors: [MyBehaviors.GlobalsBehavior]
+            behaviors: [MyBehaviors.GlobalsBehavior],
+            _loadMore: function() {
+                this.$.newsfb.limitToFirst += 20;
+            }
         });
     })();
     </script>
