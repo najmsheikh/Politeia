@@ -45,7 +45,9 @@
                 </ul>
             </div>
             <div class="card-actions">
-                <paper-icon-button icon="share" title="share"></paper-icon-button>
+                <a href="{{sharelink}}">
+                    <paper-icon-button icon="share" title="share"></paper-icon-button>
+                </a>
                 <a href="{{link}}" class="inherit">
                     <paper-icon-button icon="link" title="link"></paper-icon-button>
                 </a>
@@ -74,14 +76,21 @@
                 },
                 image: {
                     type: String,
-                    value: 'http://si.wsj.net/public/resources/images/BN-JN178_BLAND0_TOP_20150722182741.jpg',
+                    default: 'https://media2.wnyc.org/i/620/372/l/80/1/blackbox.jpeg',
                     notify: true
                 },
                 link: {
                     type: String,
                     value: 'https://google.com/',
                     notify: true
+                },
+                sharelink: {
+                    type: String,
+                    computed: 'computeLink(link)'
                 }
+            },
+            computeLink: function(link){
+                return 'https://www.facebook.com/sharer.php?s=100&p[url]=' + link;
             }
         });
     })();
