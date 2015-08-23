@@ -9,15 +9,31 @@
     .infographic {
         max-width: 89vw;
     }
+    
+    .infos paper-button {
+        width: 42vw;
+        padding: 10px;
+        background-color: #3a3a3a;
+        color: white;
+        margin: 10px;
+        display: inline-block;
+    }
+    
+    @media (width: 720px) {
+        .infos paper-button {
+            width: 80vw;
+        }
+    }
     </style>
     <template>
         <section>
-            <h4>Dialog layouts</h4>
-            <paper-button data-dialog="loans" onclick="modalHandler('loan')">Student Loans</paper-button>
-            <paper-button data-dialog="wage" onclick="modalHandler('wage')">Minimum Wage</paper-button>
-            <paper-button data-dialog="racism" onclick="modalHandler('racism')">Racism</paper-button>
-            <paper-button data-dialog="climate" onclick="modalHandler('climate')">Climate Change</paper-button>
-            <paper-button data-dialog="privacy" onclick="modalHandler('privacy')">Internet Privacy</paper-button>
+            <div class="infos">
+                <paper-button data-dialog="loans" onclick="modalHandler('loan')">Student Loans</paper-button>
+                <paper-button data-dialog="wage" onclick="modalHandler('wage')">Minimum Wage</paper-button>
+                <paper-button data-dialog="racism" onclick="modalHandler('racism')">Racism</paper-button>
+                <paper-button data-dialog="climate" onclick="modalHandler('climate')">Climate Change</paper-button>
+                <paper-button data-dialog="privacy" onclick="modalHandler('privacy')">Internet Privacy</paper-button>
+            </div>
             <dialog id="loan">
                 <img src="https://infogram.io/p/3ee0e2432ad29e7273cd6f9715093632.png" class="infographic" onclick="clickHandler('loan')">
             </dialog>

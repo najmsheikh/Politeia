@@ -13,36 +13,24 @@
     }
     </style>
     <template>
-        <mat-icon-button icon="content:sort" color="white" hidden$="[[_computeHidden(route)]]"></mat-icon-button>
+        <grapp-app-globals id="globals">
+            <grapp-app-globals-set key="ishidden" value='' id="sortval"></grapp-app-globals-set>
+            <grapp-app-globals-get key="ishidden" value="{{isHidden}}"></grapp-app-globals-get>
+        </grapp-app-globals>
+        <mat-icon-button icon="content:sort" color="white" id="sortButton"></mat-icon-button>
+        <mat-icon-button icon="action:search" color="white" id="searchButton"></mat-icon-button>
         <mat-icon-button icon="navigation:more-vert" target="myMenu" color="white" toggles-target></mat-icon-button>
         <mat-menu id="myMenu" class="dropdown-content">
             <mat-option label="LOGIN" hidden="[[!userLoggedIn]]"></mat-option>
             <mat-option label="LOGOUT" hidden="[[userLoggedIn]]"></mat-option>
-            <mat-option label="{{route}}" onclick="alert('okay')"></mat-option>
+            <mat-option label="[[isHidden]]" on-click="doThis"></mat-option>
         </mat-menu>
     </template>
     <script>
     (function() {
         Polymer({
             is: 'my-tools',
-            behaviors: [MyBehaviors.GlobalsBehavior],
-            properties: {
-                greeting: {
-                    type: String,
-                    value: 'Welcome!',
-                    notify: true
-                },
-                route: {
-                    type: String,
-                    value: MyBehaviors.GlobalsBehavior.properties.route.value
-                }
-            },
-            doThis: function() {
-                alert(MyBehaviors.GlobalsBehavior.properties.route.value == 'discover');
-            },
-            _computeHidden: function(route) {
-                return !(route == 'discover');
-            }
+            behaviors: [MyBehaviors.GlobalsBehavior]
         });
     })();
     </script>

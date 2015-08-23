@@ -4,6 +4,8 @@
 window.addEventListener('WebComponentsReady', function() {
 
     var globals =  MyBehaviors.GlobalsBehavior.properties;
+    var sortBtn = document.getElementById("sortButton");
+    var searchBtn = document.getElementById("searchButton");
 
     // We use Page.js for routing. This is a Micro
     // client-side router inspired by the Express router
@@ -13,6 +15,8 @@ window.addEventListener('WebComponentsReady', function() {
         app.route = 'discover';
         app.headerTitle = 'Discover';
         globals.route.value = 'discover';
+        sortBtn.setAttribute("style", "display: inline-block")
+        searchBtn.setAttribute("style", "display: none")
     });
 
     page('/learn', function() {
@@ -20,6 +24,8 @@ window.addEventListener('WebComponentsReady', function() {
         app.route = 'learn';
         app.headerTitle = 'Learn';
         globals.route.value = 'learn';
+        sortBtn.setAttribute("style", "display: none")
+        searchBtn.setAttribute("style", "display: none")
     });
 
     page('/explore/:name', function(data) {
@@ -28,6 +34,8 @@ window.addEventListener('WebComponentsReady', function() {
         globals.route.value = 'explore';
         app.params = data.params;
         console.log(app.params);
+        sortBtn.setAttribute("style", "display: none")
+        searchBtn.setAttribute("style", "display: inline-block")
     });
 
     page('/explore', function() {
@@ -35,6 +43,9 @@ window.addEventListener('WebComponentsReady', function() {
         app.route = 'explore';
         app.headerTitle = 'Explore';
         globals.route.value = 'explore';
+        sortBtn.setAttribute("value", "true")
+        sortBtn.setAttribute("style", "display: none")
+        searchBtn.setAttribute("style", "display: inline-block")
     });
 
     // add #! before urls

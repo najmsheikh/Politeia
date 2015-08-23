@@ -17,12 +17,7 @@
         bottom: 10px;
         padding: 6px;
     }
-    
-    .inherit {
-        color: inherit;
-        background-color: inherit;
-    }
-    
+
     @media (min-width: 601px) {
         #newsCard {
             width: 42vw;
@@ -31,7 +26,7 @@
     
     @media (width: 720px) {
         #newsCard {
-            width: 700px;
+            width: 80vw;
         }
     }
     </style>
@@ -48,7 +43,7 @@
                 <a href="{{sharelink}}">
                     <paper-icon-button icon="share" title="share"></paper-icon-button>
                 </a>
-                <a href="{{link}}" class="inherit">
+                <a href="{{link}}">
                     <paper-icon-button icon="link" title="link"></paper-icon-button>
                 </a>
                 <div class="topic">{{topic}}</div>
