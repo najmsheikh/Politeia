@@ -3,7 +3,8 @@
 <dom-module id="news-card">
     <style>
     :host {
-        display: block;
+        display: inline-block;
+        vertical-align:top
     }
     
     #newsCard {
@@ -89,7 +90,8 @@
                 }
             },
             computeLink: function(link) {
-                return 'https://www.facebook.com/sharer.php?s=100&p[url]=' + link;
+                return 'https://www.facebook.com/sharer.php?m2w&s=100&p[url]=' + link;
+                // return 'fb://post/' + link;
             }
         });
     })();

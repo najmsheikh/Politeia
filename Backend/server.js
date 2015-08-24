@@ -5,6 +5,8 @@ var nameDB = require('./fire.js');
 var discover = require('./discover.js');
 var Votesmart = require('./votesmart.js');
 var OpenSecretsClient = require('opensecrets');
+var _ = require('underscore');
+var Firebase = require('firebase');
 var client = new OpenSecretsClient('***REMOVED***');
 var votesmart = new Votesmart('***REMOVED***');
 
@@ -109,13 +111,17 @@ app.post('/listcands', function(req, res) {
 });
 
 app.post('/discover', function(req, res) {
+    var newsfb = new Firebase('https://politeianews.firebaseio.com/');
     var urls = [
-        'https://feeds.feedburner.com/EducationWeekHighschools?format=xml',
+        'http://rss.cnn.com/rss/cnn_topstories.rss',
         'http://feeds.reuters.com/reuters/topNews?format=xml'
     ];
     discover.getLinks(urls, function(data) {
         discover.getArticles(data, function(data) {
-            res.send(JSON.parse(data));
+            // var data = JSON.parse(data);
+            var unique = _.uniq(data, false, function(item){return item.title});
+            newsfb.set(unique);
+            res.end();
         })
     })
 });
@@ -125,27 +131,27 @@ app.post('/learn', function(req, res) {
 })
 
 app.post('/test', function(req, res) {
+    
     // votesmart.candidateBio('55463', function(err, json){
     //     if (!err)
     //         res.send(json);
     // })
-    votesmart.getStateOfficials('NY', function(err, json) {
-        if (!err) {
-            var list = [];
-            for (var i = 0; i < json.candidateList.candidate.length; i++) {
-                list.push({
-                    candidateId: json.candidateList.candidate[i].candidateId,
-                    firstName: json.candidateList.candidate[i].firstName,
-                    middleName: json.candidateList.candidate[i].middleName,
-                    nickName: json.candidateList.candidate[i].nickName,
-                    preferredName: json.candidateList.candidate[i].preferredName,
-                    lastName: json.candidateList.candidate[i].lastName,
-                    officeName: json.candidateList.candidate[i].officeName
-                })
-            };
-            res.send(list);
-        }
-    })
+    // votesmart.getStateOfficials('NY', function(err, json) {
+    //     if (!err) {
+    //         var list = [];
+    //         for (var i = 0; i < json.candidateList.candidate.length; i++) {
+    //             if (json.candidateList.candidate[i].officeStatus == 'active') {
+    //                 list.push(json.candidateList.candidate[i].candidateId)
+    //             }
+    //         };
+    //         // for (var i = 0; i < list.length; i++) {
+    //         //     list[i]
+    //         // };
+    //     }
+    // })
+    var json = require('./news.json');
+    var unique = _.uniq(json, false, function(item){return item.title})
+    newsfb.set(unique);
 })
 
 ////////HELPER METHODS//////////
