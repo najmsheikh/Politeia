@@ -7,10 +7,13 @@
     }
     
     #newsCard {
-        /*display: inline-block;*/
+        display: inline-block;
         /*columns: 300px 2;*/
         display: inline-block;
         padding: 15px;
+        -webkit-column-break-inside: avoid;
+        -moz-column-break-inside: avoid;
+        column-break-inside: avoid;
     }
     
     #wrapper {
@@ -43,11 +46,23 @@
     }
     </style>
     <template>
-        <!-- <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/test" method="POST" handle-as="json" last-response="{{news}}"></iron-ajax> -->
-        <firebase-collection id="newsfb" data="{{news}}" location="https://politeianews.firebaseio.com/" limit-to-first="30"></firebase-collection>
+        <!-- <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/test" method="POST" handle-as="json" last-response="[[news]]"></iron-ajax> -->
+        <firebase-collection id="newsfb" data="{{news}}" location="https://politeianews.firebaseio.com/top_stories" limit-to-first="5"></firebase-collection>
+        <firebase-collection id="educationfb" data="{{edunews}}" location="https://politeianews.firebaseio.com/education" limit-to-first="5"></firebase-collection>
+        <firebase-collection id="climatefb" data="{{climatenews}}" location="https://politeianews.firebaseio.com/climate_change" limit-to-first="5"></firebase-collection>
+        <firebase-collection id="foreignfb" data="{{foreignnews}}" location="https://politeianews.firebaseio.com/foreign_policy" limit-to-first="5"></firebase-collection>
         <div id="wrapper">
-            <template is="dom-repeat" items="{{news}}">
-                <news-card heading="{{item.title}}" content="{{item.sentences}}" link="{{item.link}}" image="{{item.image}}" id="newsCard"></news-card>
+            <template is="dom-repeat" items="[[news]]">
+                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories"></news-card>
+            </template>
+            <template is="dom-repeat" items="[[edunews]]">
+                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Education"></news-card>
+            </template>
+            <template is="dom-repeat" items="[[climatenews]]">
+                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Climate Change"></news-card>
+            </template>
+            <template is="dom-repeat" items="[[foreignnews]]">
+                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Foreign Policy"></news-card>
             </template>
         </div>
         <paper-button raised style="display: block" on-click="_loadMore"><i>LOAD MORE</i></paper-button>
@@ -58,7 +73,10 @@
             is: 'my-discover',
             behaviors: [MyBehaviors.GlobalsBehavior],
             _loadMore: function() {
-                this.$.newsfb.limitToFirst += 20;
+                this.$.newsfb.limitToFirst += 5;
+                this.$.educationfb.limitToFirst += 5;
+                this.$.climatefb.limitToFirst += 5;
+                this.$.foreignfb.limitToFirst += 5;
             }
         });
     })();

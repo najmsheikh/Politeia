@@ -6,7 +6,7 @@ var textapi = new AYLIENTextAPI({
     application_key: "***REMOVED***"
 });
 
- // TAKES A LIST OF ARTICLE URLS AND GIVES BACK FINAL JSON ARRAY OF ARTICLES
+// TAKES A LIST OF ARTICLE URLS AND GIVES BACK FINAL JSON ARRAY OF ARTICLES
 module.exports.getArticles = function(urls, callback) {
     var data = [];
     async.each(urls, function(url, callback) {
@@ -22,7 +22,7 @@ module.exports.getArticles = function(urls, callback) {
 }
 
 
- // TAKES A URL AND RETURNS ARTICLE
+// TAKES A URL AND RETURNS ARTICLE
 function getArticle(url, callback) {
     var article = [];
     var sentences;
@@ -44,7 +44,7 @@ function getArticle(url, callback) {
         function(callback) {
             shortenArticle(url, function(data) {
                 // article.push({
-                // 	sentences: JSON.parse(data)
+                //  sentences: JSON.parse(data)
                 // });
                 // console.dir(data);
                 sentences = JSON.parse(data);
@@ -62,7 +62,14 @@ function getArticle(url, callback) {
     });
 }
 
- // TAKES LIST OF RSS FEEDS AND RETURNS ARTICLE URLS FROM EACH
+module.exports.checkLink = function(url, callback) {
+    feed(url, function(err, articles) {
+        if (err) throw err;
+        callback(articles);
+    });
+}
+
+// TAKES LIST OF RSS FEEDS AND RETURNS ARTICLE URLS FROM EACH
 module.exports.getLinks = function(urls, callback) {
     var data = [];
     async.each(urls, function(item, callback) {
@@ -83,7 +90,7 @@ module.exports.getLinks = function(urls, callback) {
     })
 }
 
- // TAKES ARTICLE URL AND SUMMARIZES IT
+// TAKES ARTICLE URL AND SUMMARIZES IT
 function shortenArticle(url, callback) {
     var sents = [];
     textapi.summarize({
@@ -101,7 +108,7 @@ function shortenArticle(url, callback) {
     });
 }
 
- // TAKES ARTICLE URL AND GETS METADATA
+// TAKES ARTICLE URL AND GETS METADATA
 function getArticleData(url, callback) {
     var articledata = [];
     textapi.extract({
@@ -119,7 +126,7 @@ function getArticleData(url, callback) {
     });
 }
 
- // HELPER METHOD FOR FIXING A JSON PARSING ISSUE
+// HELPER METHOD FOR FIXING A JSON PARSING ISSUE
 function fixArticles(data, callback) {
     var newobj = [];
     for (var i = 0; i < data.length - 1; i++) {

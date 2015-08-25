@@ -111,19 +111,71 @@ app.post('/listcands', function(req, res) {
 });
 
 app.post('/discover', function(req, res) {
-    var newsfb = new Firebase('https://politeianews.firebaseio.com/');
-    var urls = [
+    var newsfb = new Firebase('https://politeianews.firebaseio.com/top_stories');
+    var educationfb = new Firebase('https://politeianews.firebaseio.com/education');
+    var climatefb = new Firebase('https://politeianews.firebaseio.com/climate_change');
+    var foreignfb = new Firebase('https://politeianews.firebaseio.com/foreign_policy');
+    var top_stories = [
         'http://rss.cnn.com/rss/cnn_topstories.rss',
         'http://feeds.reuters.com/reuters/topNews?format=xml'
     ];
-    discover.getLinks(urls, function(data) {
+    var education = [
+        'http://www.ed.gov/feed',
+        'http://www.usnews.com/rss/education'
+    ]
+    var climate_change = [
+        'http://climate.nasa.gov/news/rss.xml',
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss'
+    ];
+    var foreign_policy = [
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=eb26f8615f76cd4f&output=rss',
+        'http://feeds.cfr.org/cfr_main'
+    ];
+    // discover.getLinks(top_stories, function(data) {
+    //     discover.getArticles(data, function(data) {
+    //         var data = JSON.parse(data);
+    //         var unique = _.uniq(data, false, function(item) {
+    //             return item.title
+    //         });
+    //         newsfb.set(unique);
+    //         // res.end();
+    //         // res.send(data);
+    //     })
+    // })
+    // discover.getLinks(education, function(data) {
+    //     discover.getArticles(data, function(data) {
+    //         var data = JSON.parse(data);
+    //         var unique = _.uniq(data, false, function(item) {
+    //             return item.title
+    //         });
+    //         educationfb.set(unique);
+    //         // res.end();
+    //         // res.send(data);
+    //     })
+    // })
+    // discover.getLinks(climate_change, function(data) {
+    //     discover.getArticles(data, function(data) {
+    //         var data = JSON.parse(data);
+    //         var unique = _.uniq(data, false, function(item) {
+    //             return item.title
+    //         });
+    //         climatefb.set(unique);
+    //         // res.end();
+    //         // res.send(data);
+    //     })
+    // })
+    discover.getLinks(foreign_policy, function(data) {
         discover.getArticles(data, function(data) {
-            // var data = JSON.parse(data);
-            var unique = _.uniq(data, false, function(item){return item.title});
-            newsfb.set(unique);
-            res.end();
+            var data = JSON.parse(data);
+            var unique = _.uniq(data, false, function(item) {
+                return item.title
+            });
+            foreignfb.set(unique);
+            // res.end();
+            // res.send(data);
         })
     })
+    // res.end();
 });
 
 app.post('/learn', function(req, res) {
@@ -131,7 +183,7 @@ app.post('/learn', function(req, res) {
 })
 
 app.post('/test', function(req, res) {
-    
+    var newsfb = new Firebase('https://politeianews.firebaseio.com/');
     // votesmart.candidateBio('55463', function(err, json){
     //     if (!err)
     //         res.send(json);
@@ -152,6 +204,11 @@ app.post('/test', function(req, res) {
     var json = require('./news.json');
     var unique = _.uniq(json, false, function(item){return item.title})
     newsfb.set(unique);
+    // var links = ['http://www.ed.gov/feed']
+    // discover.checkLink('https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss&num=20', function(data) {
+    //         res.send(data);
+    //     })
+        res.end();
 })
 
 ////////HELPER METHODS//////////

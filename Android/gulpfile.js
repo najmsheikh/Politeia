@@ -259,6 +259,10 @@ gulp.task('serve:dist', ['default'], function() {
 
 // Compile into apk
 gulp.task('runapp', function() {
+    runSequence(
+        ['copy', 'styles'],
+        'elements', ['jshint', 'images', 'fonts', 'html'],
+        'vulcanize', 'runapp');
     run('cd ../../PoliteiaTest & cordova run').exec()
 });
 
