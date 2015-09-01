@@ -3,8 +3,7 @@
 <dom-module id="news-card">
     <style>
     :host {
-        display: inline-block;
-        vertical-align:top
+        display: block;
     }
     
     #newsCard {
@@ -22,16 +21,13 @@
         bottom: 10px;
         padding: 6px;
     }
+    /*.card-content {
+        display: none;
+    }*/
     
-    @media (min-width: 601px) {
+    @media (min-width: 721px) {
         #newsCard {
             width: 42vw;
-        }
-    }
-    
-    @media (width: 720px) {
-        #newsCard {
-            width: 80vw;
         }
     }
     </style>
@@ -59,7 +55,25 @@
     (function() {
         Polymer({
             is: 'news-card',
+            behaviors: [
+                Polymer.NeonAnimatableBehavior,
+                Polymer.NeonAnimationRunnerBehavior
+            ],
             properties: {
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': {
+                                name: 'scale-up-animation',
+                                node: this
+                            },
+                            'exit': {
+                                name: 'scale-down-animation',
+                                node: this
+                            }
+                        }
+                    }
+                },
                 heading: {
                     type: String,
                     value: 'Mock Heading',
@@ -92,6 +106,9 @@
             computeLink: function(link) {
                 return 'https://www.facebook.com/sharer.php?m2w&s=100&p[url]=' + link;
                 // return 'fb://post/' + link;
+            },
+            ready: function() {
+                this.playAnimation('entry');
             }
         });
     })();

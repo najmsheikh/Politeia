@@ -11,69 +11,39 @@
     }
     
     .infos paper-button {
-        width: 42vw;
-        padding: 10px;
+        width: 80vw;
+        margin: 10px 4.5vw;
         background-color: #3a3a3a;
         color: white;
-        margin: 10px;
-        display: inline-block;
     }
     
     .infos {
-        -webkit-column-count: 2;
-        -webkit-column-gap: 10px;
-        -webkit-column-fill: auto;
-        -moz-column-count: 2;
-        -moz-column-gap: 10px;
-        -moz-column-fill: auto;
-        column-count: 2;
-        column-gap: 15px;
-        column-fill: auto;
-    }
-    
-    @media (max-width: 720px) {
-        .infos paper-button {
-            width: 80vw;
-        }
-        .infos {
-            margin: auto;
-            -webkit-column-count: 1;
-            -webkit-column-gap: 10px;
-            -webkit-column-fill: auto;
-            -moz-column-count: 1;
-            -moz-column-gap: 10px;
-            -moz-column-fill: auto;
-            column-count: 1;
-            column-gap: 15px;
-            column-fill: auto;
-        }
+        padding: 15px 4.5vw;
     }
     </style>
     <template>
-        <section>
-            <div class="infos">
-                <paper-button data-dialog="loans" onclick="modalHandler('loan')">Student Loans</paper-button>
-                <paper-button data-dialog="wage" onclick="modalHandler('wage')">Minimum Wage</paper-button>
-                <paper-button data-dialog="racism" onclick="modalHandler('racism')">Racism</paper-button>
-                <paper-button data-dialog="climate" onclick="modalHandler('climate')">Climate Change</paper-button>
-                <paper-button data-dialog="privacy" onclick="modalHandler('privacy')">Internet Privacy</paper-button>
-            </div>
-            <dialog id="loan">
-                <img src="https://infogram.io/p/3ee0e2432ad29e7273cd6f9715093632.png" class="infographic" onclick="clickHandler('loan')">
-            </dialog>
-            <dialog id="wage">
-                <img src="https://infogram.io/p/8f53cd5437b81649fb7cd193cbc84190.png" class="infographic" onclick="clickHandler('wage')">
-            </dialog>
-            <dialog id="racism">
-                <img src="https://infogram.io/p/83b10732c7c58d0de7f8f96086a53063.png" class="infographic" onclick="clickHandler('racism')">
-            </dialog>
-            <dialog id="climate">
-                <img src="https://infogram.io/p/a38284378010d90cc043683ac50f97bd.png" class="infographic" onclick="clickHandler('climate')">
-            </dialog>
-            <dialog id="privacy">
-                <img src="https://infogram.io/p/dcee687fe545438e009bfcc67d940328.png" class="infographic" onclick="clickHandler('privacy')">
-            </dialog>
-        </section>
+        <div class="infos">
+            <paper-button data-dialog="loans" onclick="modalHandler('loan')">Student Loans</paper-button>
+            <paper-button data-dialog="wage" onclick="modalHandler('wage')">Minimum Wage</paper-button>
+            <paper-button data-dialog="racism" onclick="modalHandler('racism')">Racism</paper-button>
+            <paper-button data-dialog="climate" onclick="modalHandler('climate')">Climate Change</paper-button>
+            <paper-button data-dialog="privacy" onclick="modalHandler('privacy')">Internet Privacy</paper-button>
+        </div>
+        <dialog id="loan">
+            <img src="https://infogram.io/p/3ee0e2432ad29e7273cd6f9715093632.png" class="infographic" onclick="clickHandler('loan')">
+        </dialog>
+        <dialog id="wage">
+            <img src="https://infogram.io/p/8f53cd5437b81649fb7cd193cbc84190.png" class="infographic" onclick="clickHandler('wage')">
+        </dialog>
+        <dialog id="racism">
+            <img src="https://infogram.io/p/83b10732c7c58d0de7f8f96086a53063.png" class="infographic" onclick="clickHandler('racism')">
+        </dialog>
+        <dialog id="climate">
+            <img src="https://infogram.io/p/a38284378010d90cc043683ac50f97bd.png" class="infographic" onclick="clickHandler('climate')">
+        </dialog>
+        <dialog id="privacy">
+            <img src="https://infogram.io/p/dcee687fe545438e009bfcc67d940328.png" class="infographic" onclick="clickHandler('privacy')">
+        </dialog>
     </template>
     <script>
     (function() {

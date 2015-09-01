@@ -50,21 +50,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind" id="app">
-        <paper-header-panel class="flex" mode="waterfall-tall">
-            <paper-toolbar id="mainToolbar">
-                <iron-icon icon="chevron-right"></iron-icon>
-                <div class="top title">{{headerTitle}}</div>
+        <paper-scroll-header-panel main condenses keep-condensed-header scroll-away-topbar>
+            <paper-toolbar id="mainToolbar" class="tall">
+                <div class="top title flex">{{headerTitle}}</div>
                 <my-tools class="top"></my-tools>
-                <div class="bottom fit">
-                    <paper-tabs selected="{{selected}}" noink class="tabs">
-                        <paper-tab id="discover" link><a data-route="discover" href="/">DISCOVER</a></paper-tab>
-                        <paper-tab id="learn" link><a data-route="learn" href="/learn">LEARN</a></paper-tab>
-                        <paper-tab id="explore" link><a data-route="explore" href="/explore">EXPLORE</a></paper-tab>
+                <div class="bottom">
+                    <paper-tabs selected="[[selected]]" noink class="tabs">
+                        <paper-tab id="discover"><a href="/">DISCOVER</a></paper-tab>
+                        <paper-tab id="learn"><a href="/learn">LEARN</a></paper-tab>
+                        <paper-tab id="explore"><a href="/explore">EXPLORE</a></paper-tab>
                     </paper-tabs>
                 </div>
             </paper-toolbar>
             <div class="content">
-                <iron-pages attr-for-selected="data-route" selected="{{route}}" class="fullbleed">
+                <neon-animated-pages attr-for-selected="data-route" selected="[[route]]" class="fullbleed">
                     <section data-route="discover">
                         <my-discover></my-discover>
                     </section>
@@ -74,9 +73,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <section data-route="explore">
                         <my-explore></my-explore>
                     </section>
-                </iron-pages>
+                </neon-animated-pages>
             </div>
-        </paper-header-panel>
+        </paper-scroll-header-panel>
     </template>
     <!-- build:js scripts/app.js -->
     <script src="cordova.js"></script>

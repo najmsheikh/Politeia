@@ -15,7 +15,9 @@
     "mat-icon-button": "~0.9.7",
     "mat-tabs": "~0.9.7",
     "mat-pages": "~0.9.7",
-    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.3"
+    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.3",
+    "bin-packing-grid": "~0.2.3",
+    "juicy-tile-list": "~0.3.2"
   },
   "devDependencies": {}
 }

@@ -5,7 +5,7 @@
     :host {
         display: inline-flex;
     }
-
+    
     .candCard {
         width: 90vw;
     }
@@ -19,8 +19,8 @@
     }
     
     .cand-image {
-        width: 126px;
-        height: 126px;
+        width: 100px;
+        height: 100px;
         border-radius: 63px;
         -webkit-border-radius: 63px;
         -moz-border-radius: 63px;
@@ -33,7 +33,7 @@
         right: 10px;
     }
     
-    #partyColor {
+    #redParty {
         position: absolute;
         top: 0px;
         right: 0px;
@@ -42,9 +42,31 @@
         background-color: red;
     }
     
+    #blueParty {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 20px;
+        height: 40px;
+        background-color: blue;
+    }
+
+    #purpleParty {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 20px;
+        height: 40px;
+        background-color: purple;
+    }
+    
     @media (min-width: 721px) {
         .candCard {
             width: 42vw;
+        }
+        .cand-image {
+            width: 126px;
+            height: 126px;
         }
     }
     </style>
@@ -52,38 +74,85 @@
         <paper-material elevation="3" class="candCard">
             <div class="card">
                 <div>
-                    <iron-image src="{{image}}" class="cand-image" sizing="cover" placeholder="{{placeholder}}"></iron-image>
+                    <iron-image src="[[image]]" class="cand-image" sizing="cover" placeholder="[[placeholder]]"></iron-image>
                 </div>
                 <div class="flex">
                     <div>
-                        <h3 style="line-height: 0%;">{{name}}</h3>
-                        <p>{{party}}</p>
+                        <h3 style="line-height: 0%;">[[name]]</h3>
+                        <p>[[party]]</p>
                     </div>
                     <div>
-                        <p>{{education}}</p>
+                        <p>[[education]]</p>
                     </div>
                     <div class="end-justified">
-                        <p style="font-size: 12px;"><i>{{title}}</i></p>
+                        <p style="font-size: 12px;"><i>[[title]]</i></p>
                     </div>
                 </div>
-                <div id="partyColor"></div>
+                <template is="dom-if" if="[[isRepublican]]">
+                    <div id="redParty"></div>
+                </template>
+                <template is="dom-if" if="[[isDemocratic]]">
+                    <div id="blueParty"></div>
+                </template>
+                <template is="dom-if" if="[[isOther]]">
+                    <div id="purpleParty"></div>
+                </template>
             </div>
         </paper-material>
     </template>
     <script>
     (function() {
-        Polymer({
+        CandidateCard = Polymer({
             is: 'candidate-card',
+            behaviors: [
+                Polymer.NeonAnimatableBehavior,
+                Polymer.NeonAnimationRunnerBehavior
+            ],
             properties: {
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': {
+                                name: 'scale-up-animation',
+                                node: this
+                            },
+                            'exit': {
+                                name: 'scale-down-animation',
+                                node: this
+                            }
+                        }
+                    }
+                },
                 name: {
                     type: String,
-                    value: 'Politician Name',
+                    computed: '_computeName(fname, lname)'
+                },
+                fname: {
+                    type: String,
+                    value: 'Politician',
+                    notify: true
+                },
+                lname: {
+                    type: String,
+                    value: 'Name',
                     notify: true
                 },
                 party: {
                     type: String,
                     value: 'Party Affiliation',
                     notify: true
+                },
+                isDemocratic: {
+                    type: Boolean,
+                    computed: '_computeBlue(party)'
+                },
+                isRepublican: {
+                    type: Boolean,
+                    computed: '_computeRed(party)'
+                },
+                isOther: {
+                    type: Boolean,
+                    computed: '_computePurple(party)'
                 },
                 education: {
                     type: String,
@@ -100,11 +169,28 @@
                     value: '',
                     notify: true
                 },
-                placeholder: {
-                    type: String,
-                    value: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAFnCAYAAABKNJmsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODI5Mjc4RDlGQTZGMTFFMkE5QkVGMEU4Mzc4MTM1MkUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODI5Mjc4REFGQTZGMTFFMkE5QkVGMEU4Mzc4MTM1MkUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MjkyNzhEN0ZBNkYxMUUyQTlCRUYwRTgzNzgxMzUyRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4MjkyNzhEOEZBNkYxMUUyQTlCRUYwRTgzNzgxMzUyRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkQQzL0AABLZSURBVHja7N39cdtG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',
-                    notify: true
+                factoryImpl: function(image, name, title, education, party) {
+                    this.image = image;
+                    this.name = name;
+                    this.title = title;
+                    this.education = education;
+                    this.party = party;
                 }
+            },
+            _computeName: function(fname, lname) {
+                return fname + ' ' + lname;
+            },
+            _computeRed: function(party) {
+                return party.indexOf('Republican') > -1;
+            },
+            _computeBlue: function(party) {
+                return party.indexOf('Democratic') > -1;
+            },
+            _computePurple: function(party) {
+                return !(party.indexOf('Democratic') > -1) && !(party.indexOf('Republican') > -1);
+            },
+            ready: function() {
+                this.playAnimation('entry');
             }
         });
     })();

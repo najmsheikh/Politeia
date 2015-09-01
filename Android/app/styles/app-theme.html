@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     --menu-link-color: #111111;
     /* paper-tabs */
     --paper-tabs-selection-bar-color: #ffffff;
-    --paper-tab-ink-color :#ffffff;
+    --paper-tab-ink-color: #ffffff;
     /*paper-card*/
     --paper-card-header-color: #ffffff;
     /*paper-fab*/
@@ -58,14 +58,21 @@ body {
     margin: 0;
 }
 
-#drawerToolbar {
+/*#drawerToolbar {
     color: var(--secondary-text-color);
     background-color: var(--drawer-menu-color);
     border-bottom: var(--drawer-toolbar-border-color);
-}
+}*/
 
 paper-scroll-header-panel {
     height: 100%;
+    --paper-scroll-header-panel-condensed-header: {
+        background-color: red !important;
+    }
+}
+
+paper-toolbar {
+    background-color: ;
 }
 
 paper-material {
@@ -136,7 +143,7 @@ paper-toolbar.tall .app-name {
 /* Height of the scroll area */
 
 .content {
-    min-height: 900px;
+    /*min-height: 900px;*/
 }
 
 

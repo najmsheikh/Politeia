@@ -1,0 +1,146 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-candidate">
+    <style>
+    :host {
+        display: block;
+        padding-top: 10px;
+    }
+    
+    paper-card {
+        width: 80vw;
+    }
+    
+    ul {
+        line-height: 24px;
+        margin-left: -23px;
+    }
+    
+    #fab {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        color: white;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    </style>
+    <template>
+        <neon-animated-pages id="candidate-pages" selected="0">
+            <div>
+                <info-card personal name="[[name]]" religion="[[religion]]" birthday="[[birthday]]" home="[[home]]" birthplace="[[birthplace]]" family="[[family]]"></info-card>
+                <info-card category="EDUCATION">
+                    <template is="dom-if" if="{{isMultipleEdu}}">
+                        <ul>
+                            <template is="dom-repeat" items="[[education]]">
+                                <li>[[item.fullText]]</li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template is="dom-if" if="{{!isMultipleEdu}}">
+                        <ul>
+                            <li>[[education.fullText]]</li>
+                        </ul>
+                    </template>
+                </info-card>
+                <info-card category="POLITICAL XP">
+                    <template is="dom-if" if="{{isMultiplePol}}">
+                        <ul>
+                            <template is="dom-repeat" items="[[politicalxp]]">
+                                <li>[[item.fullText]]</li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template is="dom-if" if="{{!isMultiplePol}}">
+                        <ul>
+                            <li>[[politicalxp.fullText]]</li>
+                        </ul>
+                    </template>
+                </info-card>
+                <info-card category="PROFESSIONAL XP">
+                    <template is="dom-if" if="{{isMultiplePro}}">
+                        <ul>
+                            <template is="dom-repeat" items="[[professionalxp]]">
+                                <li>[[item.fullText]]</li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template is="dom-if" if="{{!isMultiplePro}}">
+                        <ul>
+                            <li>[[professionalxp.fullText]]</li>
+                        </ul>
+                    </template>
+                </info-card>
+                <info-card category="CAUCUSES">
+                    <template is="dom-if" if="{{isMultipleCau}}">
+                        <ul>
+                            <template is="dom-repeat" items="[[caucuses]]">
+                                <li>[[item.organization]]</li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template is="dom-if" if="{{!isMultipleCau}}">
+                        <ul>
+                            <li>[[caucuses.organization]]</li>
+                        </ul>
+                    </template>
+                </info-card>
+            </div>
+            <div>
+                <p>Hai</p>
+            </div>
+            <div></div>
+            <div></div>
+        </neon-animated-pages>
+        <paper-fab id="fab" icon="communication:email"></paper-fab>
+    </template>
+    <script>
+    (function() {
+        Candidate = Polymer({
+            is: 'my-candidate',
+            behaviors: [
+                Polymer.NeonAnimatableBehavior,
+                Polymer.NeonAnimationRunnerBehavior
+            ],
+            properties: {
+                animationConfig: {
+                    value: function() {
+                        return {
+                            'entry': {
+                                name: 'slide-up-animation',
+                                node: this
+                            },
+                            'exit': {
+                                name: 'scale-down-animation',
+                                node: this
+                            }
+                        }
+                    }
+                },
+                isMultipleEdu: {
+                    type: Boolean,
+                    computed: '_computeMultiple(education)'
+                },
+                isMultiplePol: {
+                    type: Boolean,
+                    computed: '_computeMultiple(politicalxp)'
+                },
+                isMultiplePro: {
+                    type: Boolean,
+                    computed: '_computeMultiple(professionalxp)'
+                },
+                isMultipleCau: {
+                    type: Boolean,
+                    computed: '_computeMultiple(caucuses)'
+                }
+            },
+            _computeMultiple: function(item) {
+                if (item != undefined)
+                    return !(item.length === undefined);
+            },
+            ready: function() {
+                this.playAnimation('entry');
+            }
+        });
+    })();
+    </script>
+</dom-module>

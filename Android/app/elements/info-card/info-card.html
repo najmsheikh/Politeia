@@ -1,0 +1,137 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="info-card">
+    <style>
+    :host {
+        display: inline-flex;
+    }
+    
+    paper-card {
+        width: 90vw;
+        line-height: 12px;
+        margin: 10px 4.5vw;
+        word-wrap: break-word;
+    }
+    
+    #wrapper {
+        padding: 15px;
+    }
+    
+    #category {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        background-color: #3a3a3a;
+        padding: 10px;
+        color: white;
+    }
+    
+    @media (min-width: 721px) {
+        paper-card {
+            width: 42vw;
+        }
+        #wrapper {
+            @apply(--layout-center);
+        }
+    }
+    </style>
+    <template>
+        <iron-media-query query="(max-width: 720px)" query-matches="{{isPhone}}"></iron-media-query>
+        <template is="dom-if" if="[[personal]]">
+            <template is="dom-if" if="[[isPhone]]">
+                <paper-card elevation="2">
+                    <div id="category">PERSONAL</div>
+                    <div id="wrapper">
+                        <p><b>Name: </b>[[name]]</p>
+                        <p><b>Religion: </b>[[religion]]</p>
+                        <p><b>Birthday: </b>[[birthday]]</p>
+                        <p><b>Birthplace: </b>[[birthplace]]</p>
+                        <p><b>Home: </b>[[home]]</p>
+                        <p><b>Family: </b>[[family]]</p>
+                    </div>
+                </paper-card>
+            </template>
+            <template is="dom-if" if="[[!isPhone]]">
+                <paper-card elevation="2">
+                    <div id="category">PERSONAL</div>
+                    <div id="wrapper" class="horizontal layout">
+                        <div class="vertical layout flex">
+                            <p><b>Name: </b>[[name]]</p>
+                            <p><b>Religion: </b>[[religion]]</p>
+                            <p><b>Birthday: </b>[[birthday]]</p>
+                            <p><b>Family: </b>[[family]]</p>
+                        </div>
+                        <div class="vertical layout">
+                            <p><b>Birthplace: </b>[[birthplace]]</p>
+                            <p><b>Home: </b>[[home]]</p>
+                        </div>
+                    </div>
+                </paper-card>
+            </template>
+        </template>
+        <template is="dom-if" if="[[!personal]]">
+            <paper-card elevation="2">
+                <div id="category">[[category]]</div>
+                <div id="wrapper">
+                    <content></content>
+                </div>
+            </paper-card>
+        </template>
+    </template>
+    <script>
+    (function() {
+        InfoCard = Polymer({
+            is: 'info-card',
+            properties: {
+                category: {
+                    type: String,
+                    value: 'CATEGORY',
+                    notify: true
+                },
+                name: {
+                    type: String,
+                    value: 'Politician Name',
+                    notify: true
+                },
+                religion: {
+                    type: String,
+                    value: 'Politican Religion',
+                    notify: true
+                },
+                birthday: {
+                    type: String,
+                    value: 'Politician religion',
+                    notify: true
+                },
+                home: {
+                    type: String,
+                    value: 'Politician Home Location',
+                    notify: true
+                },
+                birthplace: {
+                    type: String,
+                    value: 'Politician Birth Place',
+                    notify: true
+                },
+                family: {
+                    type: String,
+                    value: 'Politician Family Data',
+                    notify: true
+                },
+                personal: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                factoryImpl: function(image, name, title, education, party) {
+                    this.image = image;
+                    this.name = name;
+                    this.title = title;
+                    this.education = education;
+                    this.party = party;
+                }
+            }
+        });
+    })();
+    </script>
+</dom-module>

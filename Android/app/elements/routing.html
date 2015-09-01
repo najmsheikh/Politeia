@@ -3,7 +3,7 @@
 <script>
 window.addEventListener('WebComponentsReady', function() {
 
-    var globals =  MyBehaviors.GlobalsBehavior.properties;
+    var globals = MyBehaviors.GlobalsBehavior.properties;
     var sortBtn = document.getElementById("sortButton");
     var searchBtn = document.getElementById("searchButton");
 
@@ -11,7 +11,7 @@ window.addEventListener('WebComponentsReady', function() {
     // client-side router inspired by the Express router
     // More info: https://visionmedia.github.io/page.js/
     page('/', function() {
-        app.selected = '0';
+        app.selected = 0;
         app.route = 'discover';
         app.headerTitle = 'Discover';
         globals.route.value = 'discover';
@@ -20,7 +20,7 @@ window.addEventListener('WebComponentsReady', function() {
     });
 
     page('/learn', function() {
-        app.selected = '1';
+        app.selected = 1;
         app.route = 'learn';
         app.headerTitle = 'Learn';
         globals.route.value = 'learn';
@@ -29,7 +29,7 @@ window.addEventListener('WebComponentsReady', function() {
     });
 
     page('/explore/:name', function(data) {
-        app.selected = '2';
+        app.selected = 2;
         app.route = 'explore';
         globals.route.value = 'explore';
         app.params = data.params;
@@ -39,7 +39,7 @@ window.addEventListener('WebComponentsReady', function() {
     });
 
     page('/explore', function() {
-        app.selected = '2';
+        app.selected = 2;
         app.route = 'explore';
         app.headerTitle = 'Explore';
         globals.route.value = 'explore';

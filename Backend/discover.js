@@ -21,7 +21,6 @@ module.exports.getArticles = function(urls, callback) {
     })
 }
 
-
 // TAKES A URL AND RETURNS ARTICLE
 function getArticle(url, callback) {
     var article = [];

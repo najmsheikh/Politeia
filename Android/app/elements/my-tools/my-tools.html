@@ -6,17 +6,11 @@
         display: block;
     }
     
-    @media (max-width: 600px) {
-        h1.paper-font-display1 {
-            font-size: 24px;
-        }
+    #searchButton {
+        display: none;
     }
     </style>
     <template>
-        <grapp-app-globals id="globals">
-            <grapp-app-globals-set key="ishidden" value='' id="sortval"></grapp-app-globals-set>
-            <grapp-app-globals-get key="ishidden" value="{{isHidden}}"></grapp-app-globals-get>
-        </grapp-app-globals>
         <mat-icon-button icon="content:sort" color="white" id="sortButton"></mat-icon-button>
         <mat-icon-button icon="action:search" color="white" id="searchButton"></mat-icon-button>
         <mat-icon-button icon="navigation:more-vert" target="myMenu" color="white" toggles-target></mat-icon-button>

@@ -1,6 +1,7 @@
 var express = require('express');
 var kairos = require('./kairos.js');
 var bodyParser = require('body-parser');
+var async = require('async');
 var nameDB = require('./fire.js');
 var discover = require('./discover.js');
 var Votesmart = require('./votesmart.js');
@@ -110,13 +111,9 @@ app.post('/listcands', function(req, res) {
     })
 });
 
-app.post('/discover', function(req, res) {
-    var newsfb = new Firebase('https://politeianews.firebaseio.com/top_stories');
-    var educationfb = new Firebase('https://politeianews.firebaseio.com/education');
-    var climatefb = new Firebase('https://politeianews.firebaseio.com/climate_change');
-    var foreignfb = new Firebase('https://politeianews.firebaseio.com/foreign_policy');
+app.post('/updateNews', function(req, res) {
     var top_stories = [
-        'http://rss.cnn.com/rss/cnn_topstories.rss',
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=n&output=rss',
         'http://feeds.reuters.com/reuters/topNews?format=xml'
     ];
     var education = [
@@ -124,67 +121,49 @@ app.post('/discover', function(req, res) {
         'http://www.usnews.com/rss/education'
     ]
     var climate_change = [
-        'http://climate.nasa.gov/news/rss.xml',
+        'http://www.dailyclimate.org/feeds/topstories',
         'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss'
     ];
     var foreign_policy = [
         'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=eb26f8615f76cd4f&output=rss',
-        'http://feeds.cfr.org/cfr_main'
+        'http://www.worldaffairsjournal.org/headlines.xml'
     ];
-    // discover.getLinks(top_stories, function(data) {
-    //     discover.getArticles(data, function(data) {
-    //         var data = JSON.parse(data);
-    //         var unique = _.uniq(data, false, function(item) {
-    //             return item.title
-    //         });
-    //         newsfb.set(unique);
-    //         // res.end();
-    //         // res.send(data);
-    //     })
-    // })
-    // discover.getLinks(education, function(data) {
-    //     discover.getArticles(data, function(data) {
-    //         var data = JSON.parse(data);
-    //         var unique = _.uniq(data, false, function(item) {
-    //             return item.title
-    //         });
-    //         educationfb.set(unique);
-    //         // res.end();
-    //         // res.send(data);
-    //     })
-    // })
-    // discover.getLinks(climate_change, function(data) {
-    //     discover.getArticles(data, function(data) {
-    //         var data = JSON.parse(data);
-    //         var unique = _.uniq(data, false, function(item) {
-    //             return item.title
-    //         });
-    //         climatefb.set(unique);
-    //         // res.end();
-    //         // res.send(data);
-    //     })
-    // })
-    discover.getLinks(foreign_policy, function(data) {
+    var topic = req.body.topic;
+    var sources;
+    var newsfb;
+    switch (topic) {
+        case 'top_stories':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/top_stories');
+            sources = top_stories;
+            break;
+        case 'education':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/education');
+            sources = education;
+            break;
+        case 'climate_change':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/climate_change');
+            sources = climate_change;
+            break;
+        case 'foreign_policy':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/foreign_policy');
+            sources = foreign_policy;
+            break;
+    }
+    discover.getLinks(sources, function(data) {
         discover.getArticles(data, function(data) {
             var data = JSON.parse(data);
             var unique = _.uniq(data, false, function(item) {
                 return item.title
             });
-            foreignfb.set(unique);
+            newsfb.set(unique);
             // res.end();
-            // res.send(data);
+            res.send(data);
         })
     })
-    // res.end();
-});
-
-app.post('/learn', function(req, res) {
-
 })
 
 app.post('/test', function(req, res) {
-    var newsfb = new Firebase('https://politeianews.firebaseio.com/');
-    // votesmart.candidateBio('55463', function(err, json){
+    // votesmart.candidateBio('135705', function(err, json){
     //     if (!err)
     //         res.send(json);
     // })
@@ -201,14 +180,84 @@ app.post('/test', function(req, res) {
     //         // };
     //     }
     // })
-    var json = require('./news.json');
-    var unique = _.uniq(json, false, function(item){return item.title})
-    newsfb.set(unique);
-    // var links = ['http://www.ed.gov/feed']
-    // discover.checkLink('https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss&num=20', function(data) {
-    //         res.send(data);
+    // var name = req.body.name;
+    // votesmart.getByLastName(name, function(err, json) {
+    //     var politician = [];
+    //     politician.push({
+    //         name: json.candidateList.candidate[0].preferredName + ' ' + json.candidateList.candidate[0].lastName,
+    //         title: json.candidateList.candidate[0].title,
+    //         party: json.candidateList.candidate[0].electionParties 
     //     })
-        res.end();
+    //     console.dir(politician[0]);
+    //     res.send(politician[0]);
+    // })
+    var candfb = new Firebase('https://politica.firebaseio.com/candidates');
+    votesmart.test('test', function(err, json) {
+        candfb.set(null);
+        // var candidates = json.stageCandidates.candidate;
+        var candidates = json.candidateList.candidate;
+        var list = [];
+        for (var i = 0; i < candidates.length; i++) {
+            (function(i) {
+                var candidate = [];
+                var id = candidates[i].candidateId;
+                async.parallel([
+                    function(callback) {
+                        votesmart.getDetailedBio(id, function(err, json) {
+                            if (!err && json.bio != undefined)
+                                candidate.bio = json.bio;
+                            callback();
+                        });
+                    },
+                    function(callback) {
+                        votesmart.getAddress(id, function(err, json) {
+                            if (!err && json.address != undefined)
+                                candidate.address = json.address.office;
+                            callback();
+                        });
+                    },
+                    function(callback) {
+                        votesmart.getRating(id, function(err, json) {
+                            if (!err && json.candidateRating != undefined)
+                                candidate.ratings = json.candidateRating;
+                            callback();
+                        });
+                    },
+                    function(callback) {
+                        votesmart.getVotes(id, function(err, json) {
+                            if (!err && json.bills != undefined)
+                                candidate.votes = json.bills;
+                            callback();
+                        })
+                    },
+                    function(callback) {
+                        votesmart.getStances(id, function(err, json) {
+                            if (!err && json.npat != undefined)
+                                candidate.stances = json.npat;
+                            callback();
+                        })
+                    }
+                ], function() {
+                    candfb.push(candidate);
+                    // res.send(candidate);
+                })
+            })(i)
+        };
+        // res.send(list);
+    })
+})
+
+app.post('/getCandidate', function(req, res) {
+    var politician = req.body.name;
+    // console.log(politician);
+    votesmart.getByLastName(politician, function(err, json) {
+        // res.send(json.candidateList.candidate[0].candidateId);
+        var id = json.candidateList.candidate[0].candidateId;
+        // console.log(id);
+        votesmart.getDetailedBio(id, function(err, json) {
+            res.send(json);
+        })
+    })
 })
 
 ////////HELPER METHODS//////////

@@ -6,54 +6,25 @@
         display: block;
     }
     
-    #newsCard {
-        display: inline-block;
-        /*columns: 300px 2;*/
-        display: inline-block;
-        padding: 15px;
-        -webkit-column-break-inside: avoid;
-        -moz-column-break-inside: avoid;
-        column-break-inside: avoid;
-    }
-    
-    #wrapper {
-        -webkit-column-count: 2;
-        -webkit-column-gap: 10px;
-        -webkit-column-fill: auto;
-        -moz-column-count: 2;
-        -moz-column-gap: 10px;
-        -moz-column-fill: auto;
-        column-count: 2;
-        column-gap: 15px;
-        column-fill: auto;
+    news-card {
+        margin: 15px 4.5vw;
     }
     
     @media (max-width: 720px) {
         #newsCard {
             width: 80vw;
         }
-        #wrapper {
-            -webkit-column-count: 1;
-            -webkit-column-gap: 10px;
-            -webkit-column-fill: auto;
-            -moz-column-count: 1;
-            -moz-column-gap: 10px;
-            -moz-column-fill: auto;
-            column-count: 1;
-            column-gap: 15px;
-            column-fill: auto;
-        }
     }
     </style>
     <template>
-        <!-- <iron-ajax auto verbose url="http://de4d1a08.ngrok.io/test" method="POST" handle-as="json" last-response="[[news]]"></iron-ajax> -->
+        <iron-media-query query="(max-width: 720px)" query-matches="{{isPhone}}"></iron-media-query>
         <firebase-collection id="newsfb" data="{{news}}" location="https://politeianews.firebaseio.com/top_stories" limit-to-first="5"></firebase-collection>
         <firebase-collection id="educationfb" data="{{edunews}}" location="https://politeianews.firebaseio.com/education" limit-to-first="5"></firebase-collection>
         <firebase-collection id="climatefb" data="{{climatenews}}" location="https://politeianews.firebaseio.com/climate_change" limit-to-first="5"></firebase-collection>
         <firebase-collection id="foreignfb" data="{{foreignnews}}" location="https://politeianews.firebaseio.com/foreign_policy" limit-to-first="5"></firebase-collection>
-        <div id="wrapper">
+        <template is="dom-if" if="{{isPhone}}">
             <template is="dom-repeat" items="[[news]]">
-                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories"></news-card>
+                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
             </template>
             <template is="dom-repeat" items="[[edunews]]">
                 <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Education"></news-card>
@@ -64,7 +35,27 @@
             <template is="dom-repeat" items="[[foreignnews]]">
                 <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Foreign Policy"></news-card>
             </template>
-        </div>
+        </template>
+        <template is="dom-if" if="{{!isPhone}}">
+            <div class="horizontal layout">
+                <div class="vertical layout flex">
+                    <template is="dom-repeat" items="[[news]]">
+                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
+                    </template>
+                    <template is="dom-repeat" items="[[edunews]]">
+                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Education"></news-card>
+                    </template>
+                </div>
+                <div class="vertical layout flex">
+                    <template is="dom-repeat" items="[[climatenews]]">
+                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Climate Change"></news-card>
+                    </template>
+                    <template is="dom-repeat" items="[[foreignnews]]">
+                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Foreign Policy"></news-card>
+                    </template>
+                </div>
+            </div>
+        </template>
         <paper-button raised style="display: block" on-click="_loadMore"><i>LOAD MORE</i></paper-button>
     </template>
     <script>
@@ -77,6 +68,9 @@
                 this.$.educationfb.limitToFirst += 5;
                 this.$.climatefb.limitToFirst += 5;
                 this.$.foreignfb.limitToFirst += 5;
+            },
+            _expandCard: function() {
+                console.dir(this.$.newsCard);
             }
         });
     })();

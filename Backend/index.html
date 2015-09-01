@@ -14,13 +14,13 @@
     }
     </style>
     <script type="text/javascript">
-    var host = 'https://politeia.herokuapp.com';
+    var host = 'http://127.0.0.1:1337';
     $(document).ready(function() {
         var img_url, politician, threshold;
         $("#submit").click(function() {
             img_url = $("#img_url").val();
             politician = $("#politician").val();
-            $.post(host+"/enroll", {
+            $.post(host + "/enroll", {
                 img_url: img_url,
                 politician: politician,
             }, function(data) {
@@ -32,7 +32,7 @@
         $("#submit2").click(function() {
             img_url = $("#img_url2").val();
             threshold = $("#threshold").val();
-            $.post(host+"/recognize", {
+            $.post(host + "/recognize", {
                 img_url: img_url,
                 threshold: threshold
             }, function(data) {
@@ -43,7 +43,7 @@
         });
         $("#submit3").click(function() {
             politician = $("#politician2").val();
-            $.post(host+"/lookup", {
+            $.post(host + "/lookup", {
                 politician: politician
             }, function(data) {
                 Materialize.toast(data + ' is the politician\'s CID', 6000);
@@ -51,8 +51,36 @@
             });
         });
         $("#candList").click(function() {
-            $.post(host+"/listcands", {}, function(){
+            $.post(host + "/listcands", {}, function() {
                 Materialize.toast('Check the console!', 4000);
+            });
+        });
+        $("#updateTop").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'top_stories'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
+            });
+        });
+        $("#updateEdu").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'education'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
+            });
+        });
+        $("#updateCli").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'climate_change'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
+            });
+        });
+        $("#updateFor").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'foreign_policy'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
             });
         });
     });
@@ -129,6 +157,13 @@
         <h3>Scripts</h3>
         <div class="card center-align">
             <a class="waves-effect waves-light btn" id="candList">List 2016 Candidates</a>
+        </div>
+        <br>
+        <div class="card center-align">
+            <a class="waves-effect waves-light btn" id="updateTop">Update Top News</a>
+            <a class="waves-effect waves-light btn" id="updateEdu">Update Education News</a>
+            <a class="waves-effect waves-light btn" id="updateCli">Update Climate Change News</a>
+            <a class="waves-effect waves-light btn" id="updateFor">Update Foreign Policy News</a>
         </div>
     </div>
 </body>

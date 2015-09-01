@@ -26,9 +26,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log('Our app is ready to rock!');
     });
 
+    addEventListener('paper-header-transform', function(e) {
+        // console.log(e);
+    });
+
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function() {
         // imports are loaded and elements have been registered
+        $('#app').trigger('deviceready');
+    });
+
+    window.addEventListener('changeExplorePage', function(data){
+        // console.log('Page will be changed! With name of: ' + data.detail);
+        console.log(data.detail.bio.candidate.preferredName)
+        document.getElementById('explore-pages').selected  = document.getElementById('explore-pages').selected == 1 ? 0 :1;
     });
 
 })(document);
