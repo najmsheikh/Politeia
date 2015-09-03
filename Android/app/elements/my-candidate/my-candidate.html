@@ -25,7 +25,7 @@
     }
     
     @media (min-width: 721px) {
-        #recog-candidate-pages div {
+        #candidate-pages div {
             -webkit-column-count: 2;
             -webkit-column-gap: 10px;
             -webkit-column-fill: auto;
@@ -101,6 +101,7 @@
                 </template>
             </div>
             <div></div>
+            <div></div>
         </neon-animated-pages>
         <template is="dom-if" if="[[data.contact.hasPhone]]">
             <a href="[[data.contact.phone]]">
@@ -115,7 +116,7 @@
     </template>
     <script>
     (function() {
-        Polymer({
+        Candidate = Polymer({
             is: 'my-candidate',
             behaviors: [
                 Polymer.NeonAnimatableBehavior,
@@ -135,27 +136,7 @@
                             }
                         }
                     }
-                },
-                isMultipleEdu: {
-                    type: Boolean,
-                    computed: '_computeMultiple(education)'
-                },
-                isMultiplePol: {
-                    type: Boolean,
-                    computed: '_computeMultiple(politicalxp)'
-                },
-                isMultiplePro: {
-                    type: Boolean,
-                    computed: '_computeMultiple(professionalxp)'
-                },
-                isMultipleCau: {
-                    type: Boolean,
-                    computed: '_computeMultiple(caucuses)'
                 }
-            },
-            _computeMultiple: function(item) {
-                if (item != undefined)
-                    return !(item.length === undefined);
             },
             ready: function() {
                 this.playAnimation('entry');

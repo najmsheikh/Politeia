@@ -31,7 +31,7 @@ window.addEventListener('WebComponentsReady', function() {
     page('/explore/:page', function(data) {
         app.selected = 2;
         app.candselected = data.params.page;
-        document.getElementById('recog-candidate-pages').selected = data.params.page;
+        document.getElementById('candidate-pages').selected = data.params.page;
         app.route = 'explore';
         globals.route.value = 'explore';
     });

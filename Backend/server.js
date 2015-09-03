@@ -424,7 +424,7 @@ app.post('/getCandidate', function(req, res) {
         if(results.votes != undefined)
             politician.votes = results.votes;
         candfb.push(politician);
-        res.send(200);
+        res.send(politician);
     })
 })
 
