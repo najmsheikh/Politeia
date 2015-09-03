@@ -15,8 +15,8 @@ window.addEventListener('WebComponentsReady', function() {
         app.route = 'discover';
         app.headerTitle = 'Discover';
         globals.route.value = 'discover';
-        sortBtn.setAttribute("style", "display: inline-block")
-        searchBtn.setAttribute("style", "display: none")
+        sortBtn.setAttribute("style", "display: inline-block");
+        searchBtn.setAttribute("style", "display: none");
     });
 
     page('/learn', function() {
@@ -28,14 +28,12 @@ window.addEventListener('WebComponentsReady', function() {
         searchBtn.setAttribute("style", "display: none")
     });
 
-    page('/explore/:name', function(data) {
+    page('/explore/:page', function(data) {
         app.selected = 2;
+        app.candselected = data.params.page;
+        document.getElementById('recog-candidate-pages').selected = data.params.page;
         app.route = 'explore';
         globals.route.value = 'explore';
-        app.params = data.params;
-        console.log(app.params);
-        sortBtn.setAttribute("style", "display: none")
-        searchBtn.setAttribute("style", "display: inline-block")
     });
 
     page('/explore', function() {

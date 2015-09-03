@@ -35,13 +35,13 @@
         font-size: 15px;
         border-radius: 5px;
     }
-
+    
     paper-spinner {
         position: absolute;
         right: 45vw;
         top: 20v;
     }
-
+    
     #loading {
         display: none;
     }
@@ -51,7 +51,7 @@
     }
     </style>
     <template>
-        <firebase-collection id="candfb" data="{{candidates}}" location="https://politica.firebaseio.com/candidates" limit-to-first="30"></firebase-collection>
+        <firebase-collection id="candfb" data="{{candidates}}" location="https://politeiacands.firebaseio.com/" limit-to-first="30"></firebase-collection>
         <neon-animated-pages id="explore-pages" selected="0">
             <div>
                 <paper-button raised on-click="_testCard">Test a card</paper-button>
@@ -61,7 +61,7 @@
                 <paper-card elevation="3" id="trending">Trending</paper-card>
                 <div id="cand-wrapper">
                     <template is="dom-repeat" items="{{candidates}}" id="candidates">
-                        <candidate-card class="candidateCard" fname="{{item.bio.candidate.preferredName}}" lname="{{item.bio.candidate.lastName}}" party="{{item.bio.office.parties}}" education="{{item.bio.candidate.education.institution.0.fullText}}" title="{{item.bio.office.title}}" image="{{item.bio.candidate.photo}}" on-click="_openCandidate"></candidate-card>
+                        <candidate-card class="candidateCard" name="{{item.bio.name}}" party="{{item.bio.party}}" education="{{item.bio.education.0.fullText}}" title="{{item.bio.title}}" image="{{item.bio.photo}}" on-click="_openCandidate"></candidate-card>
                     </template>
                 </div>
                 <paper-button id="loadButton" raised style="display: block" on-click="_loadMore"><i>LOAD MORE</i></paper-button>
@@ -71,45 +71,40 @@
                 <paper-button raised on-click="_testCardBack">Test Go Back</paper-button>
                 <my-candidate></my-candidate>
             </div>
+            <div>
+                <recog-candidate></recog-candidate>
+            </div>
         </neon-animated-pages>
     </template>
     <script>
     (function() {
         Polymer({
             is: 'my-explore',
+            listeners: {
+                tap: '_openRecognizedCandidate'
+            },
             _doMagic: function() {
                 navigator.camera.getPicture(onSuccess, onFail, {
                     destinationType: Camera.DestinationType.DATA_URL
                 });
 
                 function onSuccess(imageURI) {
-                    $('#loading').show();
+                    $('#loading').css('display', 'flex');
+                    $('.candidateCard').hide();
+                    $('#loadButton').hide();
+                    $('#trending').hide();
+
                     function myDetectCallback(response) {
                         var json = JSON.parse(response.responseText);
                         if (json.images[0].transaction.status == 'success') {
-                            // this.$.candidates.setAttribute('style', 'display: none');
                             var politican = json.images[0].transaction.subject;
-                            $('.candidateCard').hide();
-                            $('#loadButton').hide();
-                            $('#trending').hide();
-                            $.post('http://dbff734a.ngrok.io/getCandidate', {
-                                name: politican
-                            }, function(data) {
-                                $('#loading').hide();
-                                var fname = data.bio.candidate.preferredName;
-                                var lname = data.bio.candidate.lastName;
-                                var party = 'Democrat';
-                                var education = data.bio.candidate.education.institution[0].fullText;
-                                var title = 'Senator'
-                                _createCard(fname, lname, party, education, title);
-                            });
+                            _testCard(politican);
                         }
-                        // alert(json.images[0].transaction.subject);
                         else
                             alert('Person not recognized. Please try again :c');
                     }
                     base64_data = imageURI;
-                    gallery_id = 'politica';
+                    gallery_id = 'politeia';
                     var options = {
                         "threshold": 0.65
                     };
@@ -126,12 +121,15 @@
             _testCardBack: function() {
                 document.getElementById('explore-pages').selected = document.getElementById('explore-pages').selected == 1 ? 0 : 1;
             },
-            _testCard: function() {
-                $('.candidateCard').hide();
-                $('#loadButton').hide();
-                $('#trending').hide();
-                _createCard('John', 'Doe', 'Independent', 'BS, Education', 'Senator')
-                // Polymer.dom(document.getElementById('cand-wrapper')).appendChild(cand);
+            _testCard: function(politican) {
+                var politican = '60043';
+                _testCard(politican);
+            },
+            _openRecognizedCandidate: function(e) {
+                // console.log(e);
+                if (e.target.classList.contains('recog-candidate-card')) {
+                    this.fire('changeExplorePage');
+                }
             },
             _computeName: function(first, last) {
                 return first + ' ' + last;
@@ -141,27 +139,48 @@
                 var cand = e.model.__data__["item"];
                 var myCandidate = document.querySelector('my-candidate');
                 // console.log(cand.bio.candidate.candidateId);
-                myCandidate.politican = JSON.stringify(cand);
-                myCandidate.name = cand.bio.candidate.preferredName + ' ' + cand.bio.candidate.lastName;
-                myCandidate.religion = cand.bio.candidate.religion;
-                myCandidate.family = cand.bio.candidate.family;
-                myCandidate.birthday = cand.bio.candidate.birthDate;
-                myCandidate.birthplace = cand.bio.candidate.birthPlace;
-                myCandidate.home = cand.bio.candidate.homeCity + ', ' + cand.bio.candidate.homeState;
-                myCandidate.education = cand.bio.candidate.education.institution;
-                myCandidate.politicalxp = cand.bio.candidate.political.experience;
-                myCandidate.professionalxp = cand.bio.candidate.profession.experience;
-                myCandidate.caucuses = cand.bio.candidate.congMembership.experience;
-                this.fire('changeExplorePage', e.model.__data__["item"]);
+                // myCandidate.politican = JSON.stringify(cand);
+                // myCandidate.name = cand.bio.candidate.preferredName + ' ' + cand.bio.candidate.lastName;
+                // myCandidate.religion = cand.bio.candidate.religion;
+                // myCandidate.family = cand.bio.candidate.family;
+                // myCandidate.birthday = cand.bio.candidate.birthDate;
+                // myCandidate.birthplace = cand.bio.candidate.birthPlace;
+                // myCandidate.home = cand.bio.candidate.homeCity + ', ' + cand.bio.candidate.homeState;
+                // myCandidate.education = cand.bio.candidate.education.institution;
+                // myCandidate.politicalxp = cand.bio.candidate.political.experience;
+                // myCandidate.professionalxp = cand.bio.candidate.profession.experience;
+                // myCandidate.caucuses = cand.bio.candidate.congMembership.experience;
+                myCandidate.data = cand;
+                // this.fire('changeExplorePage', e.model.__data__["item"]);
+                document.getElementById('explore-pages').selected = document.getElementById('explore-pages').selected == 1 ? 0 : 1;
             }
         });
-        function _createCard(fname, lname, party, education, title, image) {
+
+        function _testCard(politican) {
+            // var politican = 'jim-webb';
+            $.post('http://016184fd.ngrok.io/getCandidate', {
+                name: politican
+            }, function(data) {
+                console.log(data);
+                $('#loading').hide();
+                var myCandidate = document.querySelector('recog-candidate');
+                myCandidate.data = data;
+                var name = data.bio.name;
+                var party = data.bio.party;
+                var education = data.bio.education[0].fullText;
+                var title = data.bio.title;
+                var photo = data.bio.photo;
+                _createCard(name, party, education, title, photo);
+            });
+        }
+
+        function _createCard(name, party, education, title, image) {
             var cand = new CandidateCard();
-            cand.fname = fname;
-            cand.lname = lname;
-            cand.title = title;
+            cand.name = name;
             cand.party = party;
             cand.education = education;
+            cand.title = title;
+            cand.image = image;
             Polymer.dom(document.getElementById('cand-wrapper')).appendChild(cand);
         }
     })();

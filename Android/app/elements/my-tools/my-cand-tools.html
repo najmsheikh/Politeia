@@ -1,0 +1,20 @@
+<link rel="import" href="../elements.html">
+<link rel="import" href="../globals-behavior/globals-behavior.html">
+<dom-module id="my-cand-tools">
+    <style>
+    :host {
+        display: block;
+    }
+    </style>
+    <template>
+        <mat-icon-button icon="navigation:arrow-back" color="white" id="backButton" on-click="goBack"></mat-icon-button>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-cand-tools',
+            behaviors: [MyBehaviors.GlobalsBehavior]
+        });
+    })();
+    </script>
+</dom-module>

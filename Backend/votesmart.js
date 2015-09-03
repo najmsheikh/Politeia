@@ -62,7 +62,7 @@ VoteSmart.prototype.getAddress = function(id, callback) {
     var params = {
         candidateId: id
     };
-    this.makeRequest('Address.getOffice', params, callback);
+    this.makeRequest('Address.getCampaign', params, callback);
 };
 
 VoteSmart.prototype.getRating = function(id, callback) {

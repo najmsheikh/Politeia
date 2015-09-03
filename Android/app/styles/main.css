@@ -12,10 +12,15 @@ body {
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #333;
 }
+
 .tabs a {
-	font-family: Roboto;
-	text-decoration: none;
-	text-align: center;
-	color: white;
-	margin-top: 30%;
+    font-family: Roboto;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    margin-top: 30%;
+}
+
+#candToolbar {
+	display: none;
 }

@@ -1,6 +1,6 @@
 <link rel="import" href="../elements.html">
 <link rel="import" href="../globals-behavior/globals-behavior.html">
-<dom-module id="my-candidate">
+<dom-module id="recog-candidate">
     <style>
     :host {
         display: block;
@@ -39,7 +39,7 @@
     }
     </style>
     <template>
-        <neon-animated-pages id="candidate-pages" selected="0">
+        <neon-animated-pages id="recog-candidate-pages" selected="0">
             <div>
                 <info-card personal name="[[data.bio.name]]" religion="[[data.bio.religion]]" birthday="[[data.bio.birthDate]]" home="[[data.bio.home]]" birthplace="[[data.bio.birthPlace]]" family="[[data.bio.family]]"></info-card>
                 <info-card category="EDUCATION">
@@ -115,8 +115,8 @@
     </template>
     <script>
     (function() {
-        Polymer({
-            is: 'my-candidate',
+        Candidate = Polymer({
+            is: 'recog-candidate',
             behaviors: [
                 Polymer.NeonAnimatableBehavior,
                 Polymer.NeonAnimationRunnerBehavior
@@ -135,27 +135,7 @@
                             }
                         }
                     }
-                },
-                isMultipleEdu: {
-                    type: Boolean,
-                    computed: '_computeMultiple(education)'
-                },
-                isMultiplePol: {
-                    type: Boolean,
-                    computed: '_computeMultiple(politicalxp)'
-                },
-                isMultiplePro: {
-                    type: Boolean,
-                    computed: '_computeMultiple(professionalxp)'
-                },
-                isMultipleCau: {
-                    type: Boolean,
-                    computed: '_computeMultiple(caucuses)'
                 }
-            },
-            _computeMultiple: function(item) {
-                if (item != undefined)
-                    return !(item.length === undefined);
             },
             ready: function() {
                 this.playAnimation('entry');

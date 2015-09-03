@@ -8,7 +8,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 (function(document) {
-    'use strict';
+    // 'use strict';
 
     // Grab a reference to our auto-binding template
     // and give it some initial binding values
@@ -26,8 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log('Our app is ready to rock!');
     });
 
-    addEventListener('paper-header-transform', function(e) {
-        // console.log(e);
+    window.addEventListener('paper-header-transform', function(e) {
+        // console.dir(e);
     });
 
     // See https://github.com/Polymer/polymer/issues/1381
@@ -36,10 +36,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         $('#app').trigger('deviceready');
     });
 
-    window.addEventListener('changeExplorePage', function(data){
+    window.addEventListener('changeExplorePage', function(data) {
         // console.log('Page will be changed! With name of: ' + data.detail);
-        console.log(data.detail.bio.candidate.preferredName)
-        document.getElementById('explore-pages').selected  = document.getElementById('explore-pages').selected == 1 ? 0 :1;
+        // console.log(data.detail.bio.candidate.preferredName)
+        document.getElementById('explore-pages').selected = document.getElementById('explore-pages').selected == 2 ? 0 : 2;
+        document.getElementById('mainToolbar').style.display = 'none';
+        document.getElementById('candToolbar').style.display = 'block';
+        app.candselected = 0;
+        // document.getElementById('explore-pages').selected  = 2;
     });
 
 })(document);

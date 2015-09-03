@@ -15,6 +15,7 @@
     
     #wrapper {
         padding: 15px;
+        line-height: normal;
     }
     
     #category {
@@ -24,6 +25,23 @@
         background-color: #3a3a3a;
         padding: 10px;
         color: white;
+    }
+
+    #ratingItems {
+        max-width: 70%;
+    }
+    
+    #ratingNum {
+        display: flex;
+        align-content: center;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 100%;
+        padding: 0px 10px;
+        background-color: #3a3a3a;
+        color: white;
+        font-size: xx-large;
     }
     
     @media (min-width: 721px) {
@@ -69,11 +87,24 @@
                 </paper-card>
             </template>
         </template>
-        <template is="dom-if" if="[[!personal]]">
+        <template is="dom-if" if="[[regular]]">
             <paper-card elevation="2">
                 <div id="category">[[category]]</div>
                 <div id="wrapper">
                     <content></content>
+                </div>
+            </paper-card>
+        </template>
+        <template is="dom-if" if="[[ratingcard]]">
+            <paper-card elevation="2">
+                <div id="wrapper">
+                    <div id="ratingItems" class="vertical layout">
+                        <p><b>[[ratingname]]</b></p>
+                        <p>[[ratingtext]]</p>
+                    </div>
+                    <div id="ratingNum">
+                        <h1>[[rating]]</h1>
+                    </div>
                 </div>
             </paper-card>
         </template>
@@ -118,18 +149,35 @@
                     value: 'Politician Family Data',
                     notify: true
                 },
+                ratingname: {
+                    type: String,
+                    notify: true
+                },
+                ratingtext: {
+                    type: String,
+                    notify: true
+                },
+                rating: {
+                    type: String,
+                    notify: true
+                },
                 personal: {
                     type: Boolean,
                     value: false,
                     notify: true
                 },
-                factoryImpl: function(image, name, title, education, party) {
-                    this.image = image;
-                    this.name = name;
-                    this.title = title;
-                    this.education = education;
-                    this.party = party;
+                ratingcard: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                regular: {
+                    type: Boolean,
+                    computed: '_computeRegular(personal, ratingcard)'
                 }
+            },
+            _computeRegular(p, r) {
+                return p == r;
             }
         });
     })();

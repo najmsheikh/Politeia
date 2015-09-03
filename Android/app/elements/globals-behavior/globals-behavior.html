@@ -23,6 +23,11 @@ MyBehaviors.GlobalsBehavior = {
     },
     doThis: function() {
         alert('wow this actually works!');
+    },
+    goBack: function() {
+        document.getElementById('mainToolbar').style.display = 'block';
+        document.getElementById('candToolbar').style.display = 'none';
+        document.getElementById('explore-pages').selected = 0;
     }
 };
 </script>

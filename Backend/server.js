@@ -38,7 +38,7 @@ app.post('/serve', function(req, res) {
     var accuracy = 0.7;
     var json = {
         url: img_url,
-        gallery_name: 'politica',
+        gallery_name: 'politeia',
         threshold: accuracy,
         max_num_results: 1
     };
@@ -67,7 +67,7 @@ app.post('/enroll', function(req, res) {
     var json = {
         image: img_url,
         subject_id: politician,
-        gallery_name: 'politica'
+        gallery_name: 'politeia'
     };
     kairos.enroll(json, function(data) {
         console.log(politician + ' was enrolled.');
@@ -81,7 +81,7 @@ app.post('/recognize', function(req, res) {
     var accuracy = req.body.threshold;
     var json = {
         image: img_url,
-        gallery_name: 'politica',
+        gallery_name: 'politeia',
         threshold: accuracy,
         max_num_results: 1
     };
@@ -191,7 +191,7 @@ app.post('/test', function(req, res) {
     //     console.dir(politician[0]);
     //     res.send(politician[0]);
     // })
-    var candfb = new Firebase('https://politica.firebaseio.com/candidates');
+    var candfb = new Firebase('https://politeiacands.firebaseio.com/');
     votesmart.test('test', function(err, json) {
         candfb.set(null);
         // var candidates = json.stageCandidates.candidate;
@@ -248,15 +248,183 @@ app.post('/test', function(req, res) {
 })
 
 app.post('/getCandidate', function(req, res) {
-    var politician = req.body.name;
-    // console.log(politician);
-    votesmart.getByLastName(politician, function(err, json) {
-        // res.send(json.candidateList.candidate[0].candidateId);
-        var id = json.candidateList.candidate[0].candidateId;
-        // console.log(id);
-        votesmart.getDetailedBio(id, function(err, json) {
-            res.send(json);
-        })
+    // var politician = req.body.name;
+    // votesmart.getByLastName(politician, function(err, json) {
+    // res.send(json.candidateList.candidate[0].candidateId);
+    // var id = json.candidateList.candidate[0].candidateId;
+    var candfb = new Firebase('https://politeiacands.firebaseio.com/');
+    var id = req.body.name;
+    async.series({
+        bio: function(callback) {
+            // TODO: Add Title
+            votesmart.getDetailedBio(id, function(err, json) {
+                if (!err && json.bio != undefined) {
+                    var name = json.bio.candidate.preferredName + ' ' + json.bio.candidate.lastName;
+                    var home = json.bio.candidate.homeCity + ', ' + json.bio.candidate.homeState;
+                    var education = [],
+                        politicalxp = [],
+                        professionalxp = [],
+                        caucuses = [],
+                        photo;
+                    if (json.bio.candidate.photo.length < 1)
+                        var photo = 'http://urcomped.com/content/images/NoProfileImage.png';
+                    else
+                        var photo = json.bio.candidate.photo;
+                    if (json.bio.candidate.education.institution != undefined)
+                        education = json.bio.candidate.education.institution;
+                    else
+                        education[0] = [json.bio.candidate.education];
+                    if (json.bio.candidate.political.experience != undefined)
+                        politicalxp = json.bio.candidate.political.experience;
+                    else
+                        politicalxp[0] = [json.bio.candidate.political];
+                    if (json.bio.candidate.congMembership.experience != undefined)
+                        caucuses = json.bio.candidate.congMembership.experience;
+                    else
+                        caucuses[0] = json.bio.candidate.congMembership;
+                    if (json.bio.candidate.profession.experience != undefined)
+                        professionalxp = json.bio.candidate.profession.experience;
+                    else
+                        professionalxp[0] = [json.bio.candidate.profession];
+                    if (json.bio.office == undefined && json.bio.election != undefined)
+                        var party = json.bio.election.parties;
+                    else
+                        var party = json.bio.office.parties;
+                    if (json.bio.election != undefined)
+                        var isCandidate = true;
+                    else
+                        var isCandidate = false;
+                    var bio = {
+                        'id': json.bio.candidate.candidateId,
+                        'crpId': json.bio.candidate.crpId,
+                        'name': name,
+                        'home': home,
+                        'party': party,
+                        'photo': photo,
+                        'religion': json.bio.candidate.religion,
+                        'birthPlace': json.bio.candidate.birthPlace,
+                        'birthDate': json.bio.candidate.birthDate,
+                        'family': json.bio.candidate.family,
+                        'education': [education],
+                        'politicalxp': [politicalxp],
+                        'professionalxp': [professionalxp],
+                        'caucuses': [caucuses],
+                        'office': json.bio.office,
+                        'isCandidate': isCandidate,
+                        'election': json.bio.election
+                    }
+                }
+                bio = removeExcessArray1(JSON.stringify(bio));
+                bio = removeExcessArray2(bio);
+                callback(null, JSON.parse(bio));
+            });
+        },
+        contact: function(callback) {
+            votesmart.getAddress(id, function(err, json) {
+                if (!err && json.address != undefined) {
+                    if (json.address.office.address == undefined)
+                        var data = json.address.office[0];
+                    else
+                        var data = json.address.office
+                    if (data.phone != undefined)
+                        var phone = 'tel:' + data.phone.phone1;
+                    else
+                        var phone = 'tel:';
+                    var address = 'http://maps.google.com/?q=' + data.address.street + ',' + data.address.city + ',' + data.address.state + ',' + data.address.zip;
+                    if (phone.length < 5)
+                        var hasPhone = false;
+                    else
+                        var hasPhone = true;
+                    var contact = {
+                        hasPhone: hasPhone,
+                        phone: phone,
+                        address: address
+                    };
+                }
+                if (contact != undefined)
+                    callback(null, contact);
+                else
+                    callback(null);
+            });
+        },
+        ratings: function(callback) {
+            // TODO: SLICE RATINGS FOR PERFORMANCE
+            votesmart.getRating(id, function(err, json) {
+                var limit;
+                if (!err && json.candidateRating != undefined) {
+                    var ratings = json.candidateRating.rating;
+                    if (ratings.length > 50)
+                        limit = 50;
+                    else
+                        limit = ratings.length;
+                    ratings = ratings.slice(0, limit)
+                }
+                if (ratings != undefined)
+                    callback(null, ratings);
+                else
+                    callback(null);
+            });
+        },
+        votes: function(callback) {
+                votesmart.getVotes(id, function(err, json) {
+                    if (!err && json.bills != undefined) {
+                        var votes = [];
+                        if (json.bills.bill.length > 50)
+                            var limit = 50;
+                        else
+                            var limit = json.billTitle.bill.length;
+                        for (var i = 0; i < limit; i++) {
+                            var billNumber = json.bills.bill[i].billNumber;
+                            var billTitle = json.bills.bill[i].title;
+                            var office = json.bills.bill[i].office;
+                            var stage = json.bills.bill[i].stage;
+                            var vote;
+                            if (json.bills.bill[i].vote == 'Y' || json.bills.bill[i].vote == 'C')
+                                vote = 'YEA'
+                            else if (json.bills.bill[i].vote == 'N')
+                                vote = 'NAY'
+                            else
+                                vote = '-'
+                            var bill = {
+                                billNumber: billNumber,
+                                billTitle: billTitle,
+                                office: office,
+                                stage: stage,
+                                vote: vote
+                            };
+                            votes.push(bill);
+                        };
+
+                    }
+                    if (votes != undefined)
+                        callback(null, votes);
+                    else
+                        callback(null);
+                })
+            }
+            // stances: function(callback) {
+            //     votesmart.getStances(id, function(err, json) {
+            //         if (!err && json.npat != undefined){
+            //             var surveyMessage = json.npat.surveyMessage;
+            //             var link = json.npat.generalinfo.linkBack;
+            //             var 
+            //         }
+            //         callback(null, json);
+            //     })
+            // }
+    }, function(err, results) {
+        // candfb.push(results);
+        var politician = {};
+        if(results.bio != undefined)
+            politician.bio = results.bio;
+        if(results.contact != undefined)
+            politician.contact = results.contact;
+        if(results.ratings != undefined)
+            politician.ratings = results.ratings;
+        if(results.votes != undefined)
+            politician.votes = results.votes;
+        candfb.push(politician);
+        res.send(200);
     })
 })
 
@@ -269,6 +437,18 @@ function normalizeName(str) {
         pieces[i] = j + pieces[i].substr(1);
     }
     return pieces.join(" ");
+}
+
+function removeExcessArray1(json) {
+    return json.replace(new RegExp(escapeRegExp('[['), 'g'), '[');
+}
+
+function removeExcessArray2(json) {
+    return json.replace(new RegExp(escapeRegExp(']]'), 'g'), ']');
+}
+
+function escapeRegExp(string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
 app.listen(process.env.PORT, function() {

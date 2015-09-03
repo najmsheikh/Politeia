@@ -14,7 +14,7 @@
     }
     </style>
     <script type="text/javascript">
-    var host = 'http://127.0.0.1:1337';
+    var host = 'http://016184fd.ngrok.io';
     $(document).ready(function() {
         var img_url, politician, threshold;
         $("#submit").click(function() {
@@ -36,7 +36,7 @@
                 img_url: img_url,
                 threshold: threshold
             }, function(data) {
-                Materialize.toast(data + ' is the politician in the image', 4000);
+                Materialize.toast(data + ' is the politician\'s ID from the image', 4000);
                 $("#img_url2").val(null);
                 $("#threshold").val(null);
             });
