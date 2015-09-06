@@ -5,10 +5,11 @@ var async = require('async');
 var nameDB = require('./fire.js');
 var discover = require('./discover.js');
 var Votesmart = require('./votesmart.js');
+var nytimes = require('./nytimes.js');
 var OpenSecretsClient = require('opensecrets');
 var _ = require('underscore');
 var Firebase = require('firebase');
-var client = new OpenSecretsClient('***REMOVED***');
+var osclient = new OpenSecretsClient('***REMOVED***');
 var votesmart = new Votesmart('***REMOVED***');
 
 var app = express();
@@ -45,7 +46,7 @@ app.post('/serve', function(req, res) {
     kairos.recognize(json, function(data) {
         var politician = data.replace('-', ' ');
         nameDB.getCID(politician, function(cid) {
-            client.candContrib(cid, function(err, json) {
+            osclient.candContrib(cid, function(err, json) {
                 var organizations = [];
                 if (err) throw err;
                 for (var i = 0; i < json['contributor'].length; i++) {
@@ -163,87 +164,18 @@ app.post('/updateNews', function(req, res) {
 })
 
 app.post('/test', function(req, res) {
-    // votesmart.candidateBio('135705', function(err, json){
-    //     if (!err)
-    //         res.send(json);
-    // })
-    // votesmart.getStateOfficials('NY', function(err, json) {
-    //     if (!err) {
-    //         var list = [];
-    //         for (var i = 0; i < json.candidateList.candidate.length; i++) {
-    //             if (json.candidateList.candidate[i].officeStatus == 'active') {
-    //                 list.push(json.candidateList.candidate[i].candidateId)
-    //             }
-    //         };
-    //         // for (var i = 0; i < list.length; i++) {
-    //         //     list[i]
-    //         // };
-    //     }
-    // })
-    // var name = req.body.name;
-    // votesmart.getByLastName(name, function(err, json) {
-    //     var politician = [];
-    //     politician.push({
-    //         name: json.candidateList.candidate[0].preferredName + ' ' + json.candidateList.candidate[0].lastName,
-    //         title: json.candidateList.candidate[0].title,
-    //         party: json.candidateList.candidate[0].electionParties 
+    // var fname = req.body.fname;
+    // var lname = req.body.lname;
+    // nytimes.getFECID(lname, fname, function(id){
+    //     nytimes.getFinance(id, function(data){
+    //         res.send(JSON.parse(data));
     //     })
-    //     console.dir(politician[0]);
-    //     res.send(politician[0]);
     // })
-    var candfb = new Firebase('https://politeiacands.firebaseio.com/');
-    votesmart.test('test', function(err, json) {
-        candfb.set(null);
-        // var candidates = json.stageCandidates.candidate;
-        var candidates = json.candidateList.candidate;
-        var list = [];
-        for (var i = 0; i < candidates.length; i++) {
-            (function(i) {
-                var candidate = [];
-                var id = candidates[i].candidateId;
-                async.parallel([
-                    function(callback) {
-                        votesmart.getDetailedBio(id, function(err, json) {
-                            if (!err && json.bio != undefined)
-                                candidate.bio = json.bio;
-                            callback();
-                        });
-                    },
-                    function(callback) {
-                        votesmart.getAddress(id, function(err, json) {
-                            if (!err && json.address != undefined)
-                                candidate.address = json.address.office;
-                            callback();
-                        });
-                    },
-                    function(callback) {
-                        votesmart.getRating(id, function(err, json) {
-                            if (!err && json.candidateRating != undefined)
-                                candidate.ratings = json.candidateRating;
-                            callback();
-                        });
-                    },
-                    function(callback) {
-                        votesmart.getVotes(id, function(err, json) {
-                            if (!err && json.bills != undefined)
-                                candidate.votes = json.bills;
-                            callback();
-                        })
-                    },
-                    function(callback) {
-                        votesmart.getStances(id, function(err, json) {
-                            if (!err && json.npat != undefined)
-                                candidate.stances = json.npat;
-                            callback();
-                        })
-                    }
-                ], function() {
-                    candfb.push(candidate);
-                    // res.send(candidate);
-                })
-            })(i)
-        };
-        // res.send(list);
+    // nytimes.getCommittee(fname, function(body) {
+    //     res.send(body);
+    // })
+    nytimes.getFinancials('N00001669', function(data) {
+        res.send(data);
     })
 })
 
@@ -254,12 +186,16 @@ app.post('/getCandidate', function(req, res) {
     // var id = json.candidateList.candidate[0].candidateId;
     var candfb = new Firebase('https://politeiacands.firebaseio.com/');
     var id = req.body.name;
-    async.series({
+    var cid;
+    fnSeries = {
         bio: function(callback) {
             // TODO: Add Title
             votesmart.getDetailedBio(id, function(err, json) {
                 if (!err && json.bio != undefined) {
-                    var name = json.bio.candidate.preferredName + ' ' + json.bio.candidate.lastName;
+                    cid = json.bio.candidate.crpId;
+                    var fname = json.bio.candidate.preferredName;
+                    var lname = json.bio.candidate.lastName;
+                    var name = fname + ' ' + lname;
                     var home = json.bio.candidate.homeCity + ', ' + json.bio.candidate.homeState;
                     var education = [],
                         politicalxp = [],
@@ -353,8 +289,8 @@ app.post('/getCandidate', function(req, res) {
                 var limit;
                 if (!err && json.candidateRating != undefined) {
                     var ratings = json.candidateRating.rating;
-                    if (ratings.length > 50)
-                        limit = 50;
+                    if (ratings.length > 20)
+                        limit = 20;
                     else
                         limit = ratings.length;
                     ratings = ratings.slice(0, limit)
@@ -366,64 +302,76 @@ app.post('/getCandidate', function(req, res) {
             });
         },
         votes: function(callback) {
-                votesmart.getVotes(id, function(err, json) {
-                    if (!err && json.bills != undefined) {
-                        var votes = [];
-                        if (json.bills.bill.length > 50)
-                            var limit = 50;
-                        else
-                            var limit = json.billTitle.bill.length;
-                        for (var i = 0; i < limit; i++) {
-                            var billNumber = json.bills.bill[i].billNumber;
-                            var billTitle = json.bills.bill[i].title;
-                            var office = json.bills.bill[i].office;
-                            var stage = json.bills.bill[i].stage;
-                            var vote;
-                            if (json.bills.bill[i].vote == 'Y' || json.bills.bill[i].vote == 'C')
-                                vote = 'YEA'
-                            else if (json.bills.bill[i].vote == 'N')
-                                vote = 'NAY'
-                            else
-                                vote = '-'
-                            var bill = {
-                                billNumber: billNumber,
-                                billTitle: billTitle,
-                                office: office,
-                                stage: stage,
-                                vote: vote
-                            };
-                            votes.push(bill);
-                        };
-
-                    }
-                    if (votes != undefined)
-                        callback(null, votes);
+            votesmart.getVotes(id, function(err, json) {
+                if (!err && json.bills != undefined) {
+                    var votes = [];
+                    if (json.bills.bill.length > 20)
+                        var limit = 20;
                     else
-                        callback(null);
+                        var limit = json.billTitle.bill.length;
+                    for (var i = 0; i < limit; i++) {
+                        var billNumber = json.bills.bill[i].billNumber;
+                        var billTitle = json.bills.bill[i].title;
+                        var office = json.bills.bill[i].office;
+                        var stage = json.bills.bill[i].stage;
+                        var vote;
+                        if (json.bills.bill[i].vote == 'Y' || json.bills.bill[i].vote == 'C')
+                            vote = 'YEA'
+                        else if (json.bills.bill[i].vote == 'N')
+                            vote = 'NAY'
+                        else
+                            vote = '-'
+                        var bill = {
+                            billNumber: billNumber,
+                            billTitle: billTitle,
+                            office: office,
+                            stage: stage,
+                            vote: vote
+                        };
+                        votes.push(bill);
+                    };
+
+                }
+                if (votes != undefined)
+                    callback(null, votes);
+                else
+                    callback(null);
+            })
+        },
+        // stances: function(callback) {
+        //     votesmart.getStances(id, function(err, json) {
+        //         if (!err && json.npat != undefined) {
+        //             var surveyMessage = json.npat.surveyMessage;
+        //             var link = json.npat.generalinfo.linkBack;
+        //         }
+        //         callback(null, json);
+        //     })
+        // },
+        financials: function(callback) {
+            if (cid != undefined)
+                nytimes.getFinancials(cid, function(data) {
+                    callback(null, data);
                 })
-            }
-            // stances: function(callback) {
-            //     votesmart.getStances(id, function(err, json) {
-            //         if (!err && json.npat != undefined){
-            //             var surveyMessage = json.npat.surveyMessage;
-            //             var link = json.npat.generalinfo.linkBack;
-            //             var 
-            //         }
-            //         callback(null, json);
-            //     })
-            // }
-    }, function(err, results) {
-        // candfb.push(results);
+            else
+                callback(null);
+        }
+    };
+
+    async.series(fnSeries, function(err, results) {
         var politician = {};
-        if(results.bio != undefined)
+        if (results.bio != undefined)
             politician.bio = results.bio;
-        if(results.contact != undefined)
+        if (results.contact != undefined)
             politician.contact = results.contact;
-        if(results.ratings != undefined)
+        if (results.ratings != undefined)
             politician.ratings = results.ratings;
-        if(results.votes != undefined)
+        if (results.votes != undefined)
             politician.votes = results.votes;
-        candfb.push(politician);
+        if (results.stances != undefined)
+            politician.stances = results.stances;
+        if (results.financials != undefined)
+            politician.financials = results.financials;
+        // candfb.push(politician);
         res.send(politician);
     })
 })

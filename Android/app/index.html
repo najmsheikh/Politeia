@@ -16,13 +16,23 @@
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
+    <script type="text/javascript">
+    window.addEventListener('WebComponentsReady', function() {
+        // imports are loaded and elements have been registered
+        console.log('Web components loaded!');
+        var loadEl = document.getElementById('splash');
+        loadEl.addEventListener('transitionend', loadEl.remove);
+
+        document.body.classList.remove('loading');
+    });
+    </script>
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
-    <link rel="import" href="elements/globals-behavior/globals-behavior.html">
 </head>
 
-<body unresolved class="fullbleed layout vertical">
+<body class="fullbleed layout vertical loading">
+    <div id="splash"></div>
     <span id="browser-sync-binding"></span>
     <template is="dom-bind" id="app">
         <paper-scroll-header-panel main condenses keep-condensed-header scroll-away-topbar>
@@ -30,7 +40,7 @@
                 <div class="top title flex">{{headerTitle}}</div>
                 <my-tools class="top"></my-tools>
                 <div class="bottom">
-                    <paper-tabs selected="[[selected]]" noink class="tabs" >
+                    <paper-tabs selected="[[selected]]" noink class="tabs">
                         <paper-tab id="discover"><a href="/">DISCOVER</a></paper-tab>
                         <paper-tab id="learn"><a href="/learn">LEARN</a></paper-tab>
                         <paper-tab id="explore"><a href="/explore">EXPLORE</a></paper-tab>

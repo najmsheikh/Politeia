@@ -115,7 +115,7 @@
                 this.$.candfb.limitToFirst += 20;
             },
             _testCard: function(politican) {
-                var politican = '60043';
+                var politican = '135705';
                 _testCard(politican);
             },
             _openRecognizedCandidate: function(e) {
@@ -135,7 +135,7 @@
 
         function _testCard(politican) {
             // var politican = 'jim-webb';
-            $.post('http://016184fd.ngrok.io/getCandidate', {
+            $.post('http://***REMOVED***.ngrok.io/getCandidate', {
                 name: politican
             }, function(data) {
                 console.log(data);

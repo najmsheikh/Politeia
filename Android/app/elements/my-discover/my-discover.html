@@ -10,8 +10,12 @@
         margin: 15px 4.5vw;
     }
     
+    #sortTopics {
+        @apply(--layout-center);
+    }
+    
     @media (max-width: 720px) {
-        #newsCard {
+        .newsCard {
             width: 80vw;
         }
     }
@@ -23,36 +27,52 @@
         <firebase-collection id="climatefb" data="{{climatenews}}" location="https://politeianews.firebaseio.com/climate_change" limit-to-first="5"></firebase-collection>
         <firebase-collection id="foreignfb" data="{{foreignnews}}" location="https://politeianews.firebaseio.com/foreign_policy" limit-to-first="5"></firebase-collection>
         <template is="dom-if" if="{{isPhone}}">
-            <template is="dom-repeat" items="[[news]]">
-                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
-            </template>
-            <template is="dom-repeat" items="[[edunews]]">
-                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Education"></news-card>
-            </template>
-            <template is="dom-repeat" items="[[climatenews]]">
-                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Climate Change"></news-card>
-            </template>
-            <template is="dom-repeat" items="[[foreignnews]]">
-                <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Foreign Policy"></news-card>
-            </template>
+            <div id="topnews-temp">
+                <template is="dom-repeat" items="[[news]]">
+                    <news-card id="newstemp" heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
+                </template>
+            </div>
+            <div id="edunews-temp">
+                <template is="dom-repeat" items="[[edunews]]">
+                    <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Education"></news-card>
+                </template>
+            </div>
+            <div id="clinews-temp">
+                <template is="dom-repeat" items="[[climatenews]]">
+                    <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Climate Change"></news-card>
+                </template>
+            </div>
+            <div id="fornews-temp">
+                <template is="dom-repeat" items="[[foreignnews]]">
+                    <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Foreign Policy"></news-card>
+                </template>
+            </div>
         </template>
         <template is="dom-if" if="{{!isPhone}}">
             <div class="horizontal layout">
                 <div class="vertical layout flex">
-                    <template is="dom-repeat" items="[[news]]">
-                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
-                    </template>
-                    <template is="dom-repeat" items="[[edunews]]">
-                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Education"></news-card>
-                    </template>
+                    <div id="topnews-tempt">
+                        <template is="dom-repeat" items="[[news]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Top Stories" on-click="_expandCard"></news-card>
+                        </template>
+                    </div>
+                    <div id="clinews-tempt">
+                        <template is="dom-repeat" items="[[climatenews]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Climate Change"></news-card>
+                        </template>
+                    </div>
                 </div>
                 <div class="vertical layout flex">
-                    <template is="dom-repeat" items="[[climatenews]]">
-                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Climate Change"></news-card>
-                    </template>
-                    <template is="dom-repeat" items="[[foreignnews]]">
-                        <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" id="newsCard" topic="Foreign Policy"></news-card>
-                    </template>
+                    <div id="edunews-tempt">
+                        <template is="dom-repeat" items="[[edunews]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Education"></news-card>
+                        </template>
+                    </div>
+                    <div id="fornews-tempt">
+                        <template is="dom-repeat" items="[[foreignnews]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Foreign Policy"></news-card>
+                        </template>
+                    </div>
                 </div>
             </div>
         </template>

@@ -31,19 +31,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     // See https://github.com/Polymer/polymer/issues/1381
-    window.addEventListener('WebComponentsReady', function() {
-        // imports are loaded and elements have been registered
-        $('#app').trigger('deviceready');
-    });
+    // window.addEventListener('WebComponentsReady', function() {
+    //     // imports are loaded and elements have been registered
+    //     console.log('Web components loaded!');
+    //     var loadEl = document.getElementById('splash');
+    //     loadEl.addEventListener('transitionend', loadEl.remove);
+
+    //     document.body.classList.remove('loading');
+    // });
 
     window.addEventListener('changeExplorePage', function(data) {
         // console.log('Page will be changed! With name of: ' + data.detail);
         // console.log(data.detail.bio.candidate.preferredName)
+        document.getElementById('candidate-pages').selected = 0;
         document.getElementById('explore-pages').selected = document.getElementById('explore-pages').selected == 1 ? 0 : 1;
         document.getElementById('mainToolbar').style.display = 'none';
         document.getElementById('candToolbar').style.display = 'block';
         app.candselected = 0;
         // document.getElementById('explore-pages').selected  = 2;
     });
+
+    window.addEventListener('sortTopic', function(data) {
+        var topic = data.detail.substring(0, data.detail.indexOf('.'));
+        var active = data.detail.substring(data.detail.indexOf('.')+1);
+        if (active == 'true') {
+            if (!document.querySelector('my-discover').isPhone)
+                topic = topic + 't';
+            document.getElementById(topic).style.display = 'block';
+        } else {
+            if (!document.querySelector('my-discover').isPhone)
+                topic = topic + 't';
+            document.getElementById(topic).style.display = 'none';
+        }
+    })
 
 })(document);

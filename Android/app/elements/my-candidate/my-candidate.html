@@ -101,7 +101,81 @@
                 </template>
             </div>
             <div></div>
-            <div></div>
+            <div>
+                <info-card category="PERSONAL FINANCE">
+                    <p><b>Net Worth: </b>
+                        <accounting-element format-money="[[data.financials.profile.general.net_high]]"></accounting-element>
+                    </p>
+                    <p><b>Assets Worth: </b>
+                        <accounting-element format-money="[[data.financials.profile.general.asset_high]]"></accounting-element>
+                    </p>
+                </info-card>
+                <info-card category="CAMPAIGN FINANCE">
+                    <p><b>Receipts: </b>
+                        <accounting-element format-money="[[data.financials.summary.total]]"></accounting-element>
+                    </p>
+                    <p><b>Expenditures: </b>
+                        <accounting-element format-money="[[data.financials.summary.spent]]"></accounting-element>
+                    </p>
+                    <p><b>Cash on hand: </b>
+                        <accounting-element format-money="[[data.financials.summary.cash_on_hand]]"></accounting-element>
+                    </p>
+                    <p><b>Debt: </b>
+                        <accounting-element format-money="[[data.financials.summary.debt]]"></accounting-element>
+                    </p>
+                </info-card>
+                <info-card category="ASSETS">
+                    <ul>
+                        <template is="dom-repeat" items="[[data.financials.profile.assets]]">
+                            <li>[[item.name]]</li>
+                        </template>
+                    </ul>
+                </info-card>
+                <info-card category="TRANSACTIONS">
+                    <ul>
+                        <template is="dom-repeat" items="[[data.financials.profile.transactions]]">
+                            <li>[[item.asset_name]]</li>
+                            <p>[[item.tx_action]]</p>
+                        </template>
+                    </ul>
+                </info-card>
+                <info-card category="TOP CONTRIBUTORS">
+                    <ul>
+                        <template is="dom-repeat" items="[[data.financials.contribs]]">
+                            <li><b>[[item.org]]</b></li>
+                            <div class="horizontal layout">
+                                <p class="flex"><b>PACS: </b>
+                                    <accounting-element format-money="[[item.pacs]]"></accounting-element>
+                                </p>
+                                <p class="flex"><b>Ind: </b>
+                                    <accounting-element format-money="[[item.indivs]]"></accounting-element>
+                                </p>
+                                <p class="flex"><b>Total: </b>
+                                    <accounting-element format-money="[[item.total]]"></accounting-element>
+                                </p>
+                            </div>
+                        </template>
+                    </ul>
+                </info-card>
+                <info-card category="TOP INDUSTRIES">
+                    <ul>
+                        <template is="dom-repeat" items="[[data.financials.industries]]">
+                            <li><b>[[item.industry_name]]</b></li>
+                            <div class="horizontal layout">
+                                <p class="flex"><b>PACS: </b>
+                                    <accounting-element format-money="[[item.pacs]]"></accounting-element>
+                                </p>
+                                <p class="flex"><b>Ind: </b>
+                                    <accounting-element format-money="[[item.indivs]]"></accounting-element>
+                                </p>
+                                <p class="flex"><b>Total: </b>
+                                    <accounting-element format-money="[[item.total]]"></accounting-element>
+                                </p>
+                            </div>
+                        </template>
+                    </ul>
+                </info-card>
+            </div>
         </neon-animated-pages>
         <template is="dom-if" if="[[data.contact.hasPhone]]">
             <a href="[[data.contact.phone]]">

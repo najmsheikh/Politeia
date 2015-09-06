@@ -9,9 +9,24 @@
     #searchButton {
         display: none;
     }
+    
+    paper-checkbox {
+        display: block;
+    }
+
+    mat-overlay {
+        padding: 8px !important;
+        width: 100% !important;
+    }
     </style>
     <template>
-        <mat-icon-button icon="content:sort" color="white" id="sortButton"></mat-icon-button>
+        <mat-icon-button icon="content:sort" color="white" id="sortButton" target="sortMenu" toggles-target></mat-icon-button>
+        <mat-menu id="sortMenu" class="dropdown-content vertical layout">
+            <paper-checkbox checked on-change="_sortTop">Top Stories</paper-checkbox>
+            <paper-checkbox checked on-change="_sortEdu">Education</paper-checkbox>
+            <paper-checkbox checked on-change="_sortCli">Climate Change</paper-checkbox>
+            <paper-checkbox checked on-change="_sortFor">Foreign Policy</paper-checkbox>
+        </mat-menu>
         <mat-icon-button icon="action:search" color="white" id="searchButton"></mat-icon-button>
         <mat-icon-button icon="navigation:more-vert" target="myMenu" color="white" toggles-target></mat-icon-button>
         <mat-menu id="myMenu" class="dropdown-content">
@@ -24,7 +39,19 @@
     (function() {
         Polymer({
             is: 'my-tools',
-            behaviors: [MyBehaviors.GlobalsBehavior]
+            behaviors: [MyBehaviors.GlobalsBehavior],
+            _sortTop: function(e) {
+                this.fire('sortTopic', 'topnews-temp.'+e.target.active);
+            },
+            _sortEdu: function(e) {
+                this.fire('sortTopic', 'edunews-temp.'+e.target.active);
+            },
+            _sortCli: function(e) {
+                this.fire('sortTopic', 'clinews-temp.'+e.target.active);
+            },
+            _sortFor: function(e) {
+                this.fire('sortTopic', 'fornews-temp.'+e.target.active);
+            }
         });
     })();
     </script>

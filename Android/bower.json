@@ -1,23 +1,28 @@
 {
-  "name": "polymer-starter-kit",
+  "name": "politeia",
   "private": true,
   "dependencies": {
-    "iron-elements": "PolymerElements/iron-elements#1.0.0",
-    "paper-elements": "PolymerElements/paper-elements#1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#1.0.1",
-    "neon-elements": "PolymerElements/neon-elements#1.0.0",
-    "page": "visionmedia/page.js#~1.6.3",
+    "accounting-element": "~0.2.0",
     "app-router": "~2.6.1",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1",
-    "paper-card": "PolymerElements/paper-card#~1.0.1",
     "file-upload": "~1.5.2",
-    "mat-menu": "~0.9.7",
+    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.4",
+    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
     "mat-icon-button": "~0.9.7",
-    "mat-tabs": "~0.9.7",
+    "mat-menu": "~0.9.7",
     "mat-pages": "~0.9.7",
-    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.3",
-    "bin-packing-grid": "~0.2.3",
-    "juicy-tile-list": "~0.3.2"
+    "mat-tabs": "~0.9.7",
+    "neon-elements": "PolymerElements/neon-elements#^1.0.0",
+    "page": "visionmedia/page.js#~1.6.3",
+    "paper-card": "latest",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
+    "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
+    "polymer": "Polymer/polymer#^1.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "polymer": "^1.1.0",
+    "webcomponentsjs": "0.7.12",
+    "paper-ripple": "^1.0.0",
+    "font-roboto": "master"
+  }
 }
