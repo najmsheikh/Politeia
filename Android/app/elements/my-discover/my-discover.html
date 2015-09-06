@@ -26,6 +26,8 @@
         <firebase-collection id="educationfb" data="{{edunews}}" location="https://politeianews.firebaseio.com/education" limit-to-first="5"></firebase-collection>
         <firebase-collection id="climatefb" data="{{climatenews}}" location="https://politeianews.firebaseio.com/climate_change" limit-to-first="5"></firebase-collection>
         <firebase-collection id="foreignfb" data="{{foreignnews}}" location="https://politeianews.firebaseio.com/foreign_policy" limit-to-first="5"></firebase-collection>
+        <firebase-collection id="internetfb" data="{{internetnews}}" location="https://politeianews.firebaseio.com/internet_privacy" limit-to-first="5"></firebase-collection>
+        <firebase-collection id="civilfb" data="{{civilnews}}" location="https://politeianews.firebaseio.com/civil_rights" limit-to-first="5"></firebase-collection>
         <template is="dom-if" if="{{isPhone}}">
             <div id="topnews-temp">
                 <template is="dom-repeat" items="[[news]]">
@@ -61,6 +63,11 @@
                             <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Climate Change"></news-card>
                         </template>
                     </div>
+                    <div id="intnews-tempt">
+                        <template is="dom-repeat" items="[[internetnews]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Internet Privacy"></news-card>
+                        </template>
+                    </div>
                 </div>
                 <div class="vertical layout flex">
                     <div id="edunews-tempt">
@@ -71,6 +78,11 @@
                     <div id="fornews-tempt">
                         <template is="dom-repeat" items="[[foreignnews]]">
                             <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Foreign Policy"></news-card>
+                        </template>
+                    </div>
+                    <div id="civnews-tempt">
+                        <template is="dom-repeat" items="[[civilnews]]">
+                            <news-card heading="[[item.title]]" content="[[item.sentences]]" link="[[item.link]]" image="[[item.image]]" class="newsCard" topic="Civil Rights"></news-card>
                         </template>
                     </div>
                 </div>
@@ -88,6 +100,8 @@
                 this.$.educationfb.limitToFirst += 5;
                 this.$.climatefb.limitToFirst += 5;
                 this.$.foreignfb.limitToFirst += 5;
+                this.$.civilfb.limitToFirst += 5;
+                this.$.internetfb.limitToFirst += 5;
             },
             _expandCard: function() {
                 console.dir(this.$.newsCard);
