@@ -122,12 +122,20 @@ app.post('/updateNews', function(req, res) {
         'http://www.usnews.com/rss/education'
     ]
     var climate_change = [
-        'http://www.dailyclimate.org/feeds/topstories',
-        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss'
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=e2c9bdd06b7eeef3&output=rss',
+        'http://www.dailyclimate.org/feeds/topstories'
     ];
     var foreign_policy = [
         'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&csid=eb26f8615f76cd4f&output=rss',
         'http://www.worldaffairsjournal.org/headlines.xml'
+    ];
+    var internet_privacy = [
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=internet+privacy&output=rss',
+        'http://www.vogelitlawblog.com/articles/internet-privacy/feed/'
+    ];
+    var civil_rights = [
+        'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=civil+rights&output=rss',
+        'http://www.thenewcivilrightsmovement.com/home.rss'
     ];
     var topic = req.body.topic;
     var sources;
@@ -148,6 +156,14 @@ app.post('/updateNews', function(req, res) {
         case 'foreign_policy':
             newsfb = new Firebase('https://politeianews.firebaseio.com/foreign_policy');
             sources = foreign_policy;
+            break;
+        case 'internet_privacy':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/internet_privacy');
+            sources = internet_privacy;
+            break;
+        case 'civil_rights':
+            newsfb = new Firebase('https://politeianews.firebaseio.com/civil_rights');
+            sources = civil_rights;
             break;
     }
     discover.getLinks(sources, function(data) {

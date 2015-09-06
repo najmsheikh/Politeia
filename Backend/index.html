@@ -83,6 +83,20 @@
                 Materialize.toast('News updated!', 4000);
             });
         });
+        $("#updateCiv").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'civil_rights'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
+            });
+        });
+        $("#updateInt").click(function() {
+            $.post(host + "/updateNews", {
+                topic: 'internet_privacy'
+            }, function() {
+                Materialize.toast('News updated!', 4000);
+            });
+        });
     });
     </script>
 </head>
@@ -164,6 +178,8 @@
             <a class="waves-effect waves-light btn" id="updateEdu">Update Education News</a>
             <a class="waves-effect waves-light btn" id="updateCli">Update Climate Change News</a>
             <a class="waves-effect waves-light btn" id="updateFor">Update Foreign Policy News</a>
+            <a class="waves-effect waves-light btn" id="updateInt">Update Internet Privacy News</a>
+            <a class="waves-effect waves-light btn" id="updateCiv">Update Civil Rights News</a>
         </div>
     </div>
 </body>
