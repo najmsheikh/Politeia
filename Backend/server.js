@@ -190,7 +190,11 @@ app.post('/test', function(req, res) {
     // nytimes.getCommittee(fname, function(body) {
     //     res.send(body);
     // })
-    nytimes.getFinancials('N00001669', function(data) {
+    // nytimes.getFinancials('N00001669', function(data) {
+    //     res.send(data);
+    // })
+    var id = req.body.name
+    votesmart.getDetailedBio(id, function(err, data) {
         res.send(data);
     })
 })
@@ -246,11 +250,16 @@ app.post('/getCandidate', function(req, res) {
                         var isCandidate = true;
                     else
                         var isCandidate = false;
+                    if (json.bio.office != undefined)
+                        var title = json.bio.office.title;
+                    else
+                        var title = '';
                     var bio = {
                         'id': json.bio.candidate.candidateId,
                         'crpId': json.bio.candidate.crpId,
                         'name': name,
                         'home': home,
+                        'title': title,
                         'party': party,
                         'photo': photo,
                         'religion': json.bio.candidate.religion,
